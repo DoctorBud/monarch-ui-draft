@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.5.0/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.e9aa5e5419158b6ce0fa49edcd356c03.js"
+  "/monarch-ui-draft/precache-manifest.9c9ef1164aad004c023fb0e8c46326bd.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "monarch-ui"});

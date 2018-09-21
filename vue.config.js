@@ -3,6 +3,7 @@ const webpack = require('webpack')
 
 module.exports = {
   outputDir: 'docs',
+  baseUrl: '/monarch-ui-draft/',
   lintOnSave: false,
 
   configureWebpack: {
