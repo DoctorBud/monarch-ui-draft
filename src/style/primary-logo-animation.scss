@@ -1,0 +1,81 @@
+.dynamic-import-test {
+  width:25px;
+  position:fixed;
+  right: 3px;
+  top:10px;
+  z-index:1900;
+}
+
+
+.dynamic-import-test span.test-require-ensure {
+  cursor: pointer;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* IE/Edge */
+  user-select: none;
+  font-weight: bold;
+  color: darkslateblue;
+}
+
+.dynamic-import-test span.test-require-ensure.active {
+  animation-duration: 2s;
+  animation-name: active-link;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+
+@keyframes rotate-fidget-spinner-left {
+  from {
+    transform: rotate(360deg);
+    opacity: 0.2;
+  }
+
+  to {
+    transform: rotate(0deg);
+    opacity: 1.0;
+  }
+}
+@keyframes rotate-fidget-spinner-right {
+  from {
+    transform: rotate(0deg);
+    opacity: 1.0;
+  }
+
+  to {
+    transform: rotate(360deg);
+    opacity: 0.2;
+  }
+}
+
+
+.dynamic-import-test img.fidget-spinner {
+  display: block;
+  margin: auto;
+  height: auto;
+  max-width: 100%;
+  position: absolute;
+  background: transparent;
+  animation-duration: 10s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.dynamic-import-test img.fidget-spinner.left {
+  display: none;
+}
+
+.dynamic-import-test img.fidget-spinner.right {
+}
+
+.dynamic-import-test img.fidget-spinner.left.rotate {
+  display: block;
+  transform: scaleY(-1);
+  animation-name: rotate-fidget-spinner-left;
+}
+
+.dynamic-import-test img.fidget-spinner.right.rotate {
+  animation-name: rotate-fidget-spinner-right;
+}
