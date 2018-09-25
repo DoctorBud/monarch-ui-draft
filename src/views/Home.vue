@@ -19,12 +19,14 @@
               <div
                 class="col-md-12 py-2">
                 <p class="intro-text">
-                  Advancing translational science by semantically integrating biological information across species.
+                  Advancing translational science by semantically integrating
+                  biological information across species.
                 </p>
               </div>
 
               <div class="col-12">
-                <monarch-autocomplete home-search="true"/>
+                <monarch-autocomplete
+                  :home-search="true"/>
               </div>
             </div>
 
@@ -136,7 +138,7 @@
                 role="button">
                 <img
                   style="max-height:35px;"
-                  src="../assets/img/icon-diseases.png"
+                  src="@/assets/img/icon-diseases.png"
                   alt="disease">
               </router-link>
               <span class="network-name"><br><b>218,313</b><br>Disease-Phenotype Associations</span>
@@ -148,7 +150,7 @@
                 role="button">
                 <img
                   style="max-height:35px;"
-                  src="../assets/img/icon-genes.png"
+                  src="@/assets/img/icon-genes.png"
                   alt="disease">
               </router-link>
               <span class="network-name"><br><b>793,526</b><br>Gene-Phenotype Associations</span>
@@ -160,7 +162,7 @@
                 role="button">
                 <img
                   style="max-height:35px;"
-                  src="../assets/img/icon-models.png"
+                  src="@/assets/img/icon-models.png"
                   alt="disease">
               </router-link>
               <span class="network-name"><br><b>20,870</b><br>Model Associations</span>
@@ -305,8 +307,8 @@
 <script>
 
 // @ is an alias to /src
-import MonarchAutocomplete from '@/components/MonarchAutocomplete.vue'
-import HomeFooter from '@/components/HomeFooter.vue'
+import MonarchAutocomplete from '@/components/MonarchAutocomplete.vue';
+import HomeFooter from '@/components/HomeFooter.vue';
 
 export default {
   name: 'Home',
@@ -314,16 +316,16 @@ export default {
     'monarch-autocomplete': MonarchAutocomplete,
     'home-footer': HomeFooter
   },
-  data () {
+  data() {
     return {
-    }
+    };
   },
-  mounted () {
+  mounted() {
     this.$nextTick(_ => {
       // navbar_search_init('home_search', 'home_search_form');
-    })
+    });
   }
-}
+};
 
 /*
 
@@ -367,7 +369,7 @@ export default {
 </script>
 
 <style lang="scss">
-  @import "../style/prelude";
+  @import "~@/style/variables";
   $home-primary: pink;  // #42DCA3;
 
   #monarch-home-container h1,

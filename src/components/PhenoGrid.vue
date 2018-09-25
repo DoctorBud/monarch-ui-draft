@@ -23,28 +23,29 @@ export default {
     }
 
   },
-  data () {
+  data() {
     return {
       pgVersion: null
-    }
+    };
   },
-  mounted () {
-    this.pgVersion = this.index
+  mounted() {
+    this.pgVersion = this.index;
   },
-  updated () {
+  updated() {
     if (this.pgVersion === this.index) {
-      this.launchPhenogrid()
-    } else {
-      this.pgVersion = this.index
+      this.launchPhenogrid();
+    }
+    else {
+      this.pgVersion = this.index;
     }
   },
   methods: {
-    launchPhenogrid () {
+    launchPhenogrid() {
       const pgData = {
         'title': 'Phenogrid Results',
         'xAxis': this.xAxis,
         'yAxis': this.yAxis
-      }
+      };
       Phenogrid.createPhenogridForElement(this.$refs.phenogridbox, {
         serverURL: 'https://beta.monarchinitiative.org',
         gridSkeletonData: pgData,
@@ -52,8 +53,8 @@ export default {
         selectedSort: 'Frequency',
         geneList: this.xAxis,
         owlSimFunction: this.mode
-      })
+      });
     }
   }
-}
+};
 </script>

@@ -146,7 +146,7 @@
         />
       </div>
     </div>
-    <div v-show="dataError">
+    <div v-if="dataError">
       <h3>BioLink Error</h3>
       <div class="row">
         <div class="col-xs-12 pre-scrollable">
@@ -164,22 +164,27 @@
 </template>
 
 <script>
-import * as MA from 'monarchAccess'
+import * as MA from '@/monarchAccess';
+import JsonTree from 'vue-json-tree'
+
 export default {
+  components: {
+    'json-tree': JsonTree
+  },
   filters: {
-    pubHref (curie) {
-      const identifier = curie.split(/[:]+/).pop()
-      return `https://www.ncbi.nlm.nih.gov/pubmed/${identifier}`
+    pubHref(curie) {
+      const identifier = curie.split(/[:]+/).pop();
+      return `https://www.ncbi.nlm.nih.gov/pubmed/${identifier}`;
     },
-    eviHref (curie) {
-      const identifier = curie.split(/[:]+/).pop()
-      return `http://purl.obolibrary.org/obo/ECO_${identifier}`
+    eviHref(curie) {
+      const identifier = curie.split(/[:]+/).pop();
+      return `http://purl.obolibrary.org/obo/ECO_${identifier}`;
     },
-    sourceHref (url) {
+    sourceHref(url) {
       return url.split(/[/]+/)
         .pop()
         .split(/[.]+/)[0]
-        .toUpperCase()
+        .toUpperCase();
     }
   },
   props: {
@@ -201,7 +206,7 @@ export default {
       required: false
     }
   },
-  data () {
+  data() {
     return {
       currentPage: 1,
       rowsPerPage: 25,
@@ -212,7 +217,7 @@ export default {
       dataPacket: '',
       dataFetched: false,
       dataError: false,
-      fields: '',
+      fields: [],
       rows: [],
       taxonFields: [
         'gene',
@@ -221,27 +226,27 @@ export default {
         'variant',
         'homolog'
       ]
-    }
+    };
   },
   computed: {
-    trueFacets () {
-      const truth = []
+    trueFacets() {
+      const truth = [];
       Object.entries(this.facets.species)
         .forEach(elem => {
           if (elem[1]) {
-            truth.push(this.keyMap(elem[0]))
+            truth.push(this.keyMap(elem[0]));
           }
-        })
-      return truth
+        });
+      return truth;
     }
   },
   watch: {
-    cardType () {
-      this.dataFetched = false
-      this.dataError = false
-      this.generateFields()
+    cardType() {
+      this.dataFetched = false;
+      this.dataError = false;
+      this.generateFields();
 
-      this.$refs.tableRef.refresh()
+      this.$refs.tableRef.refresh();
       // this.fetchData();
     },
     // dataPacket() {
@@ -250,30 +255,30 @@ export default {
     //   }
     // },
     facets: {
-      handler () {
-        this.currentPage = 1
-        this.$refs.tableRef.refresh()
+      handler() {
+        this.currentPage = 1;
+        this.$refs.tableRef.refresh();
         // this.fetchData();
       },
       deep: true
     }
   },
-  mounted () {
-    this.generateFields()
+  mounted() {
+    this.generateFields();
     // this.fetchData();
   },
   methods: {
-    rowsProvider (ctx, callback) {
+    rowsProvider(ctx, callback) {
       // console.log('rowsProvider', ctx);
       // debugger;
       this.fetchData().then(data => {
-        callback(this.rows)
+        callback(this.rows);
       }).catch(error => {
-        callback([])
-      })
+        callback([]);
+      });
     },
 
-    keyMap (key) {
+    keyMap(key) {
       const keyMappings = {
         'Skeletal system': 'HP:0000924',
         'Limbs': 'HP:0040064',
@@ -318,85 +323,89 @@ export default {
         'Saccharomyces cerevisiae S288C': 'NCBITaxon:559292',
         'Sus scrofa': 'NCBITaxon:9823',
         'Xenopus (Silurana) tropicalis': 'NCBITaxon:8364'
-      }
-      return keyMappings[key]
+      };
+      return keyMappings[key];
     },
 
-    rowClickHandler (record, index, event) {
-      this.rowClicked = !this.rowClicked
+    rowClickHandler(record, index, event) {
+      this.rowClicked = !this.rowClicked;
     },
 
-    async fetchData () {
-      const that = this
+    async fetchData() {
+      const that = this;
       // console.log('####fetchData');
       try {
         const params = {
           fetch_objects: true,
           start: ((this.currentPage - 1) * this.rowsPerPage),
           rows: this.rowsPerPage
-        }
-        let searchResponse = await MA.getNodeAssociations(
+        };
+        const searchResponse = await MA.getNodeAssociations(
           this.nodeType,
           this.identifier,
           this.cardType,
           params
-        )
-        if (!searchResponse.data ||
-            !searchResponse.data.associations) {
-          that.dataPacket = null
-          throw new Error('MA.getNodeAssociations() returned no data')
+        );
+        if (!searchResponse.data
+            || !searchResponse.data.associations) {
+          that.dataPacket = null;
+          throw new Error('MA.getNodeAssociations() returned no data');
         }
-        that.dataPacket = searchResponse
-        that.dataFetched = true
-        that.totalItems = searchResponse.data.numFound
+        that.dataPacket = searchResponse;
+        that.dataFetched = true;
+        that.totalItems = searchResponse.data.numFound;
         // searchResponse.data.associations.forEach(a => {
         //   console.log(a.subject.label, a.subject.taxon.label);
         // });
         // that.currentPage = 1;
-        that.populateRows()
-      } catch (e) {
-        that.dataError = e
-        console.log('BioLink Error', e)
+        that.populateRows();
+        that.dataError = {
+          response: searchResponse.data
+        };
+      }
+      catch (e) {
+        that.dataError = e;
+        console.log('BioLink Error', e);
       }
     },
-    populateRows () {
-      this.rows = []
-      let count = 0
+    populateRows() {
+      this.rows = [];
+      let count = 0;
       this.dataPacket.data.associations.forEach(elem => {
-        count += 1
+        count += 1;
         let pubs = [
           'No References'
-        ]
-        let pubsLength = 0
+        ];
+        let pubsLength = 0;
         if (elem.publications) {
-          pubs = this.parsePublications(elem.publications)
-          pubsLength += pubs.length
+          pubs = this.parsePublications(elem.publications);
+          pubsLength += pubs.length;
         }
         let evidence = [
           {
             lbl: 'No Evidence',
             id: ''
           }
-        ]
-        let evidenceLength = 0
-        const eviResults = this.parseEvidence(elem.evidence_graph.nodes)
+        ];
+        let evidenceLength = 0;
+        const eviResults = this.parseEvidence(elem.evidence_graph.nodes);
         if (eviResults.length) {
-          evidence = eviResults
-          evidenceLength += eviResults.length
+          evidence = eviResults;
+          evidenceLength += eviResults.length;
         }
-        let objectElem = elem.object
+        let objectElem = elem.object;
         if (this.inverted) {
-          objectElem = elem.subject
+          objectElem = elem.subject;
         }
-        const taxon = this.parseTaxon(objectElem)
+        const taxon = this.parseTaxon(objectElem);
 
         if (!taxon.id || this.trueFacets.includes(taxon.id)) {
           this.rows.push({
             references: pubs,
             referencesLength: pubsLength,
             annotationType: this.cardType,
-            evidence: evidence,
-            evidenceLength: evidenceLength,
+            evidence,
+            evidenceLength,
             objectCurie: objectElem.id,
             sources: elem.provided_by,
             sourcesLength: elem.provided_by.length,
@@ -406,12 +415,12 @@ export default {
             taxonId: taxon.id,
             relationId: elem.relation.id,
             relationLabel: elem.relation.label
-          })
+          });
         }
-      })
+      });
     },
-    generateFields () {
-      this.isGene = false
+    generateFields() {
+      this.isGene = false;
       const fields = [
         {
           key: 'show_details',
@@ -435,57 +444,59 @@ export default {
           key: 'sources',
           label: 'Sources'
         }
-      ]
+      ];
       if (this.taxonFields.includes(this.cardType)) {
-        this.isGene = true
+        this.isGene = true;
         fields.splice(2, 0, {
           key: 'taxon',
           label: 'Taxon'
           // sortable: true,
-        })
+        });
       }
-      this.fields = fields
+      this.fields = fields;
     },
-    getBiolinkAnnotation (val) {
-      let result = `${val}s/`
+    getBiolinkAnnotation(val) {
+      let result = `${val}s/`;
       if (val === 'anatomy') {
-        result = 'expression/anatomy'
-      } else if (val === 'literature') {
-        result = val
-      } else if (val === 'function') {
-        result = val
+        result = 'expression/anatomy';
       }
-      return result
+      else if (val === 'literature') {
+        result = val;
+      }
+      else if (val === 'function') {
+        result = val;
+      }
+      return result;
     },
-    parseEvidence (evidenceList) {
-      let result = []
+    parseEvidence(evidenceList) {
+      let result = [];
       if (evidenceList) {
-        result = evidenceList.filter(elem => elem.id.includes('ECO'))
+        result = evidenceList.filter(elem => elem.id.includes('ECO'));
       }
-      return result
+      return result;
     },
-    parsePublications (pubsList) {
-      const pubs = []
-      pubsList.forEach(elem => pubs.push(elem.id))
-      return pubs
+    parsePublications(pubsList) {
+      const pubs = [];
+      pubsList.forEach(elem => pubs.push(elem.id));
+      return pubs;
     },
-    parseTaxon (elemObj) {
+    parseTaxon(elemObj) {
       const taxon = {
         label: '',
         id: ''
-      }
+      };
       if ('taxon' in elemObj) {
-        taxon.label = elemObj.taxon.label
-        taxon.id = elemObj.taxon.id
+        taxon.label = elemObj.taxon.label;
+        taxon.id = elemObj.taxon.id;
       }
-      return taxon
+      return taxon;
     },
-    firstCap (val) {
+    firstCap(val) {
       return val.charAt(0)
-        .toUpperCase() + val.slice(1)
+        .toUpperCase() + val.slice(1);
     }
   }
-}
+};
 </script>
 <style scoped>
   a {

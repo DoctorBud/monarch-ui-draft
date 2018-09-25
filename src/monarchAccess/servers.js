@@ -35,4 +35,4 @@ export const serverConfigurations = {
     'analytics_id': '',
     'biolink_url': 'https://api-dev.monarchinitiative.org/api/'
   }
-}
+};

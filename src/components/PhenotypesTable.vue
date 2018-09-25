@@ -67,7 +67,7 @@
   </div>
 </template>
 <script>
-import * as MA from 'monarchAccess'
+import * as MA from '@/monarchAccess';
 
 export default {
   props: {
@@ -80,7 +80,7 @@ export default {
       required: true
     }
   },
-  data () {
+  data() {
     return {
       dataFetched: false,
       rowsPerPage: 10,
@@ -115,35 +115,36 @@ export default {
       ],
       items: [],
       preItems: []
-    }
+    };
   },
   watch: {
-    phenotypes () {
-      this.comparePhenotypes()
+    phenotypes() {
+      this.comparePhenotypes();
     },
-    preItems () {
-      this.processItems()
+    preItems() {
+      this.processItems();
     }
   },
-  mounted () {
-    this.comparePhenotypes()
+  mounted() {
+    this.comparePhenotypes();
   },
   methods: {
-    async comparePhenotypes () {
-      const that = this
+    async comparePhenotypes() {
+      const that = this;
       try {
-        let searchResponse = await MA.comparePhenotypes(this.phenotypes, this.genes)
+        const searchResponse = await MA.comparePhenotypes(this.phenotypes, this.genes);
 
-        this.preItems = searchResponse
-        this.dataFetched = true
-      } catch (e) {
-        that.dataError = e
-        console.log('BioLink Error', e)
+        this.preItems = searchResponse;
+        this.dataFetched = true;
+      }
+      catch (e) {
+        that.dataError = e;
+        console.log('BioLink Error', e);
       }
     },
-    processItems () {
-      this.items = []
-      this.preItems.data.results.forEach((elem) => {
+    processItems() {
+      this.items = [];
+      this.preItems.data.results.forEach(elem => {
         const rowData = {
           hitLabel: elem.j.label,
           hitId: elem.j.id,
@@ -156,23 +157,23 @@ export default {
           otherMatchLabel: '',
           otherMatchIc: '',
           otherMatchLink: ''
-        }
+        };
         elem.matches.forEach(match => {
           if (match.lcs.id !== rowData.hitId) {
-            rowData.otherMatchIc = this.round(match.lcs.IC, 2)
-            rowData.otherMatchId = match.lcs.id
-            rowData.otherMatchLabel = match.lcs.label
-            rowData.otherMatchLink = `/phenotype/${match.lcs.id}`
+            rowData.otherMatchIc = this.round(match.lcs.IC, 2);
+            rowData.otherMatchId = match.lcs.id;
+            rowData.otherMatchLabel = match.lcs.label;
+            rowData.otherMatchLink = `/phenotype/${match.lcs.id}`;
           }
-        })
-        this.items.push(rowData)
-      })
+        });
+        this.items.push(rowData);
+      });
     },
-    round (value, decimals) {
-      return value.toFixed(decimals)
+    round(value, decimals) {
+      return value.toFixed(decimals);
     }
   }
-}
+};
 </script>
 <style>
 

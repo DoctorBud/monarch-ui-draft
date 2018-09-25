@@ -300,13 +300,13 @@
   </div>
 </template>
 <script>
-import * as MA from 'monarchAccess'
+import * as MA from '@/monarchAccess';
 
-const findIndex = require('lodash/findIndex')
+const findIndex = require('lodash/findIndex');
 
 export default {
   name: 'AnalyzePhenotypes',
-  data () {
+  data() {
     return {
       mode: 'search',
       showPhenogrid: false,
@@ -374,120 +374,121 @@ export default {
           }
         }
       ]
-    }
+    };
   },
   computed: {
-    showComparableList () {
-      let show = false
+    showComparableList() {
+      let show = false;
       if (this.phenotypes.length) {
         if (this.genes.length || this.selectedGroups.length) {
-          show = true
+          show = true;
         }
       }
-      return show
+      return show;
     }
   },
   methods: {
-    async fetchLabel (curie, curieType) {
-      const that = this
+    async fetchLabel(curie, curieType) {
+      const that = this;
       try {
-        let searchResponse = await MA.getNodeLabelByCurie(curie)
+        const searchResponse = await MA.getNodeLabelByCurie(curie);
         if (curieType === 'phenotype') {
-          this.convertPhenotypes(searchResponse)
+          this.convertPhenotypes(searchResponse);
           if (searchResponse.status === 500) {
-            this.showGeneAlert = false
+            this.showGeneAlert = false;
           }
         }
         if (curieType === 'gene') {
-          this.convertGenes(searchResponse)
+          this.convertGenes(searchResponse);
           if (searchResponse.status === 500) {
-            this.showGeneAlert = true
+            this.showGeneAlert = true;
           }
         }
-      } catch (e) {
-        that.dataError = e
-        console.log('BioLink Error', e)
+      }
+      catch (e) {
+        that.dataError = e;
+        console.log('BioLink Error', e);
       }
     },
-    popPhenotype (ind) {
-      this.phenotypes.splice(ind, 1)
+    popPhenotype(ind) {
+      this.phenotypes.splice(ind, 1);
     },
-    popGroup (ind) {
-      this.selectedGroups.splice(ind, 1)
+    popGroup(ind) {
+      this.selectedGroups.splice(ind, 1);
     },
-    popGene (ind) {
-      this.genes.splice(ind, 1)
+    popGene(ind) {
+      this.genes.splice(ind, 1);
     },
-    handlePhenotypes (payload) {
-      this.phenotypes.push(payload)
+    handlePhenotypes(payload) {
+      this.phenotypes.push(payload);
     },
-    handleReplacePhenotype (payload) {
-      const replaceIndex = findIndex(this.phenotypes, { curie: payload.root })
-      this.phenotypes.splice(replaceIndex, 1)
-      this.phenotypes.push(payload)
+    handleReplacePhenotype(payload) {
+      const replaceIndex = findIndex(this.phenotypes, { curie: payload.root });
+      this.phenotypes.splice(replaceIndex, 1);
+      this.phenotypes.push(payload);
     },
-    handleGenes (payload) {
-      this.genes.push(payload)
+    handleGenes(payload) {
+      this.genes.push(payload);
     },
-    generatePhenogridData () {
-      this.showPhenogrid = true
+    generatePhenogridData() {
+      this.showPhenogrid = true;
       if (this.selectedGroups.length) {
-        this.xAxis = this.selectedGroups
-      } else {
-        this.xAxis = this.genes.map(elem => {
-          this.mode = 'compare'
-          return elem.curie
-        })
+        this.xAxis = this.selectedGroups;
       }
-      this.yAxis = this.phenotypes.map(elem => {
-        return {
-          id: elem.curie,
-          term: elem.match
-        }
-      })
-      this.pgIndex += 1
+      else {
+        this.xAxis = this.genes.map(elem => {
+          this.mode = 'compare';
+          return elem.curie;
+        });
+      }
+      this.yAxis = this.phenotypes.map(elem => ({
+        id: elem.curie,
+        term: elem.match
+      }));
+      this.pgIndex += 1;
     },
-    geneListLookup () {
-      this.genes = []
-      this.geneCurieList.split(',').forEach((elem) => {
-        this.fetchLabel(`${this.geneCurieType}:${elem.trim()}`, 'gene')
-      })
+    geneListLookup() {
+      this.genes = [];
+      this.geneCurieList.split(',').forEach(elem => {
+        this.fetchLabel(`${this.geneCurieType}:${elem.trim()}`, 'gene');
+      });
     },
-    generatePGDataFromPhenotypeList () {
-      this.rejectedPhenotypeCuries = []
+    generatePGDataFromPhenotypeList() {
+      this.rejectedPhenotypeCuries = [];
       const acceptedPrefixes = [
         'HP',
         'MP',
         'ZP'
-      ]
-      this.phenotypes = []
+      ];
+      this.phenotypes = [];
       this.phenoCurieList.split(',').forEach(elem => {
-        const elemTrimmed = elem.trim()
-        const prefix = elemTrimmed.split(':')[0]
+        const elemTrimmed = elem.trim();
+        const prefix = elemTrimmed.split(':')[0];
         if (acceptedPrefixes.includes(prefix)) {
-          this.fetchLabel(elemTrimmed, 'phenotype')
-        } else {
-          this.rejectedPhenotypeCuries.push(elemTrimmed)
-          this.showPhenotypeAlert = true
+          this.fetchLabel(elemTrimmed, 'phenotype');
         }
-      })
+        else {
+          this.rejectedPhenotypeCuries.push(elemTrimmed);
+          this.showPhenotypeAlert = true;
+        }
+      });
     },
-    convertGenes (elem) {
-      const geneData = elem.data
+    convertGenes(elem) {
+      const geneData = elem.data;
       this.genes.push({
         curie: geneData.id,
         match: geneData.label
-      })
+      });
     },
-    convertPhenotypes (elem) {
-      const phenoData = elem.data
+    convertPhenotypes(elem) {
+      const phenoData = elem.data;
       this.phenotypes.push({
         curie: phenoData.id,
         match: phenoData.label
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style scoped>

@@ -2,33 +2,34 @@
 
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue'
-import Router from 'vue-router'
-import VueGoodTable from 'vue-good-table'
-import BootstrapVue from 'bootstrap-vue/dist/bootstrap-vue.esm'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
-import VueFormWizard from 'vue-form-wizard'
-import 'vue-form-wizard/dist/vue-form-wizard.min.css'
+import Vue from 'vue';
+import Router from 'vue-router';
+import VueGoodTable from 'vue-good-table';
+import BootstrapVue from 'bootstrap-vue/dist/bootstrap-vue.esm';
 
-import App from './App.vue'
-import Home from '@/components/Home.vue'
-import HomeFooter from '@/components/HomeFooter.vue'
-import Navbar from '@/components/Navbar.vue'
-import Node from '@/components/Node.vue'
-import NodeSidebar from '@/components/NodeSidebar.vue'
-import NodeCard from '@/components/NodeCard.vue'
-import MonarchLegacy from '@/components/MonarchLegacy.vue'
-import AssocTable from '@/components/AssocTable.vue'
-import AssocFacets from '@/components/AssocFacets.vue'
-import MonarchAutocomplete from '@/components/MonarchAutocomplete.vue'
-import ExacGeneSummary from '@/components/ExacGeneSummary.vue'
-import ExacVariantTable from '@/components/ExacVariantTable.vue'
-import AnalyzePhenotypes from '@/components/AnalyzePhenotypes.vue'
-import Analytics from '@/components/Analytics.vue'
-import PhenotypesTable from '@/components/PhenotypesTable.vue'
-import LocalNav from '@/components/LocalNav.vue'
-import PhenoGrid from '@/components/PhenoGrid.vue'
-import FooterAll from '@/components/FooterAll.vue'
+// import 'bootstrap-vue/dist/bootstrap-vue.css';
+import VueFormWizard from 'vue-form-wizard';
+import 'vue-form-wizard/dist/vue-form-wizard.min.css';
+
+import App from './App.vue';
+import Home from '@/components/Home.vue';
+import HomeFooter from '@/components/HomeFooter.vue';
+import Navbar from '@/components/Navbar.vue';
+import Node from '@/components/Node.vue';
+import NodeSidebar from '@/components/NodeSidebar.vue';
+import NodeCard from '@/components/NodeCard.vue';
+import MonarchLegacy from '@/components/MonarchLegacy.vue';
+import AssocTable from '@/components/AssocTable.vue';
+import AssocFacets from '@/components/AssocFacets.vue';
+import MonarchAutocomplete from '@/components/MonarchAutocomplete.vue';
+import ExacGeneSummary from '@/components/ExacGeneSummary.vue';
+import ExacVariantTable from '@/components/ExacVariantTable.vue';
+import AnalyzePhenotypes from '@/components/AnalyzePhenotypes.vue';
+import Analytics from '@/components/Analytics.vue';
+import PhenotypesTable from '@/components/PhenotypesTable.vue';
+import LocalNav from '@/components/LocalNav.vue';
+import PhenoGrid from '@/components/PhenoGrid.vue';
+import FooterAll from '@/components/FooterAll.vue';
 
 /**
  * The linter can be disabled via LINTER=false env var
@@ -37,12 +38,14 @@ import FooterAll from '@/components/FooterAll.vue'
  */
 if (process.env.NODE_ENV !== 'production') {
   if (!process.env.LINTER) {
-    console.warn('Linter disabled, make sure to run your code against the linter, otherwise, if it fails, your commit will be rejected.')
-  } else {
-    console.info('Linter active, if you meet some problems, you can still run without linter, just set the env var LINTER=false.')
+    console.warn('Linter disabled, make sure to run your code against the linter, otherwise, if it fails, your commit will be rejected.');
   }
-} else if (process.env.DEVTOOLS) {
-  console.info('Turn on the "Sources" tab of your devtools to inspect original source code - thanks to sourcemaps!')
+  else {
+    console.info('Linter active, if you meet some problems, you can still run without linter, just set the env var LINTER=false.');
+  }
+}
+else if (process.env.DEVTOOLS) {
+  console.info('Turn on the "Sources" tab of your devtools to inspect original source code - thanks to sourcemaps!');
 }
 
 /**
@@ -50,25 +53,25 @@ if (process.env.NODE_ENV !== 'production') {
  * Won't show in production
  */
 if (process.env.NODE_ENV === 'mock') {
-  console.info('MOCK mode')
+  console.info('MOCK mode');
 }
 
 if (process.env.DEVTOOLS && process.env.NODE_ENV !== 'production') {
-  console.info(`You're on DEVTOOLS mode, you may have access to tools enhancing developer experience - off to you to choose to disable them in production ...`)
+  console.info(`You're on DEVTOOLS mode, you may have access to tools enhancing developer experience - off to you to choose to disable them in production ...`);
 }
 
-let router = null
+let router = null;
 
-function loadPathContentAsync (path, done) {
+function loadPathContentAsync(path, done) {
   /* global XMLHttpRequest */
-  const oReq = new XMLHttpRequest()
+  const oReq = new XMLHttpRequest();
 
-  let refinedPath = path
+  let refinedPath = path;
   if (refinedPath.indexOf('/') === 0) {
-    refinedPath = '/legacy' + refinedPath
+    refinedPath = '/legacy' + refinedPath;
 
     if (window.mngLocalServerMode) {
-      refinedPath = `http://localhost:8080${refinedPath}`
+      refinedPath = `http://localhost:8080${refinedPath}`;
     }
   }
 
@@ -80,20 +83,21 @@ function loadPathContentAsync (path, done) {
   //   refinedPath += '?stripme';
   // }
 
-  oReq.addEventListener('loadend', function load () {
-    done(this.status, this.responseText, this.responseURL, refinedPath)
-  })
+  oReq.addEventListener('loadend', function load() {
+    done(this.status, this.responseText, this.responseURL, refinedPath);
+  });
 
   try {
-    oReq.open('GET', refinedPath)
-    oReq.send()
-  } catch (e) {
-    console.log('loadPathContentAsync exception', path, refinedPath, this, e)
+    oReq.open('GET', refinedPath);
+    oReq.send();
+  }
+  catch (e) {
+    console.log('loadPathContentAsync exception', path, refinedPath, this, e);
   }
 }
 
 /* global window */
-window.loadPathContentAsync = loadPathContentAsync
+window.loadPathContentAsync = loadPathContentAsync;
 
 // window.addEventListener('popstate', function pop(event) {
 //   console.log('popstate fired!');
@@ -101,26 +105,26 @@ window.loadPathContentAsync = loadPathContentAsync
 // });
 
 const main = () => {
-  Vue.config.productionTip = false
-  Vue.use(Router)
-  Vue.use(VueGoodTable)
-  Vue.use(BootstrapVue)
-  Vue.use(VueFormWizard)
+  Vue.config.productionTip = false;
+  Vue.use(Router);
+  Vue.use(VueGoodTable);
+  Vue.use(BootstrapVue);
+  Vue.use(VueFormWizard);
 
-  Vue.component('monarch-navbar', Navbar)
-  Vue.component('node-sidebar', NodeSidebar)
-  Vue.component('node-card', NodeCard)
-  Vue.component('assoc-table', AssocTable)
-  Vue.component('assoc-facets', AssocFacets)
-  Vue.component('monarch-autocomplete', MonarchAutocomplete)
-  Vue.component('home-footer', HomeFooter)
-  Vue.component('exac-gene', ExacGeneSummary)
-  Vue.component('exac-variant', ExacVariantTable)
+  Vue.component('monarch-navbar', Navbar);
+  Vue.component('node-sidebar', NodeSidebar);
+  Vue.component('node-card', NodeCard);
+  Vue.component('assoc-table', AssocTable);
+  Vue.component('assoc-facets', AssocFacets);
+  Vue.component('monarch-autocomplete', MonarchAutocomplete);
+  Vue.component('home-footer', HomeFooter);
+  Vue.component('exac-gene', ExacGeneSummary);
+  Vue.component('exac-variant', ExacVariantTable);
   // Vue.component('analyze-phenotypes', AnalyzePhenotypes);
-  Vue.component('phenotypes-table', PhenotypesTable)
-  Vue.component('local-nav', LocalNav)
-  Vue.component('pheno-grid', PhenoGrid)
-  Vue.component('footer-all', FooterAll)
+  Vue.component('phenotypes-table', PhenotypesTable);
+  Vue.component('local-nav', LocalNav);
+  Vue.component('pheno-grid', PhenoGrid);
+  Vue.component('footer-all', FooterAll);
 
   const availableCardTypes = [
     'anatomy',
@@ -138,15 +142,13 @@ const main = () => {
     'pathway',
     'phenotype',
     'variant'
-  ]
+  ];
 
-  const nodeRoutes = availableCardTypes.map(nodeType => {
-    return {
-      path: `/${nodeType}/:id`,
-      name: `/Node${nodeType}`,
-      component: Node
-    }
-  })
+  const nodeRoutes = availableCardTypes.map(nodeType => ({
+    path: `/${nodeType}/:id`,
+    name: `/Node${nodeType}`,
+    component: Node
+  }));
 
   router = new Router({
     mode: 'history',
@@ -173,12 +175,12 @@ const main = () => {
         component: MonarchLegacy
       }
     ]
-  })
+  });
 
   router.locationChangeHack = function (url) {
-    console.log('locationChangeHack loadPathContentAsync', url)
-    loadPathContentAsync(url)
-  }
+    console.log('locationChangeHack loadPathContentAsync', url);
+    loadPathContentAsync(url);
+  };
 
   //
   // Adapted from Navigo - https://github.com/krasimir/navigo
@@ -191,37 +193,37 @@ const main = () => {
   //   router.navigate(location);
   // });
 
-  router.updatePageLinks = function updatePageLinks () {
-    function findLinks () {
-      return [].slice.call(document.querySelectorAll('[data-monarch-legacy]'))
+  router.updatePageLinks = function updatePageLinks() {
+    function findLinks() {
+      return [].slice.call(document.querySelectorAll('[data-monarch-legacy]'));
     }
 
-    function getLinkPath (link) {
-      return link.pathname || link.getAttribute('href')
+    function getLinkPath(link) {
+      return link.pathname || link.getAttribute('href');
     }
 
-    var self = this
+    const self = this;
 
     findLinks().forEach(link => {
       if (!link.hasListenerAttached) {
         // console.log('link:', link, getLinkPath(link));
         link.addEventListener('click', function (e) {
-          var location = getLinkPath(link)
+          let location = getLinkPath(link);
 
           location = location
             .replace(/\/+$/, '')
-            .replace(/^\/+/, '/')
+            .replace(/^\/+/, '/');
 
           // console.log('click', location, self._destroyed);
           if (!self._destroyed) {
-            e.preventDefault()
-            self.push(location)
+            e.preventDefault();
+            self.push(location);
           }
-        })
-        link.hasListenerAttached = true
+        });
+        link.hasListenerAttached = true;
       }
-    })
-  }
+    });
+  };
 
   /* eslint-disable no-new */
   new Vue({
@@ -229,30 +231,30 @@ const main = () => {
     router,
     components: { App },
     template: '<App/>'
-  })
+  });
 
-  window.vueRouter = router
+  window.vueRouter = router;
 
-  const { document } = global
+  const { document } = global;
   if (document && document.querySelector) {
-    const testRequireEnsureLink = document.querySelector('.test-require-ensure')
-    const logos = global.document.querySelectorAll('.fidget-spinner')
+    const testRequireEnsureLink = document.querySelector('.test-require-ensure');
+    const logos = global.document.querySelectorAll('.fidget-spinner');
 
     testRequireEnsureLink.addEventListener('click', () => {
-      console.log('testRequireEnsureLink')
+      console.log('testRequireEnsureLink');
       // the following won't be included in the original build but
       // will be lazy loaded only when needed
       import('./scripts/css-utils.js')
         .then(module => {
-          const { toggleCssClassName } = module
-          toggleCssClassName(logos[0], 'rotate')
-          toggleCssClassName(logos[1], 'rotate')
-          toggleCssClassName(testRequireEnsureLink, 'active')
+          const { toggleCssClassName } = module;
+          toggleCssClassName(logos[0], 'rotate');
+          toggleCssClassName(logos[1], 'rotate');
+          toggleCssClassName(testRequireEnsureLink, 'active');
         })
-        .catch(error => console.error('Chunk loading failed', error))
-    })
+        .catch(error => console.error('Chunk loading failed', error));
+    });
   }
-}
+};
 
 // window.serverEnvironment = 'unknown';
 // function getServerEnvironment() {
@@ -269,4 +271,4 @@ const main = () => {
 
 // getServerEnvironment();
 
-main()
+main();

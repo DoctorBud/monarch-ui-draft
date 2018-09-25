@@ -89,7 +89,8 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
+import axios from 'axios';
+
 export default {
   props: {
     nodeId: {
@@ -97,7 +98,7 @@ export default {
       required: true
     }
   },
-  data () {
+  data() {
     return {
       rowData: '',
       exacID: '',
@@ -106,91 +107,92 @@ export default {
         ClinVarVariant: 'clinvar.variant_id',
         dbSNP: 'dbsnp.rsid'
       }
-    }
+    };
   },
   computed: {
-    nodePrefix () {
-      const splitId = this.nodeId.split(':')
+    nodePrefix() {
+      const splitId = this.nodeId.split(':');
       return {
         prefix: splitId[0],
         identifier: splitId[1]
-      }
+      };
     }
   },
-  mounted () {
+  mounted() {
     if (this.nodePrefix.prefix in this.curieMap) {
-      this.hitMyVariant()
+      this.hitMyVariant();
     }
   },
   methods: {
-    buildRowData (prefixes, alleleCounts, alleleNumbers, homozygotes) {
-      const rowData = {}
-      let aCTotal = 0
-      let aNTotal = 0
-      let homTotal = 0
-      let aFTotal = 0
+    buildRowData(prefixes, alleleCounts, alleleNumbers, homozygotes) {
+      const rowData = {};
+      let aCTotal = 0;
+      let aNTotal = 0;
+      let homTotal = 0;
+      let aFTotal = 0;
 
       prefixes.forEach(prefix => {
-        const aC = alleleCounts[`ac_${prefix}`]
-        const aN = alleleNumbers[`an_${prefix}`]
-        const hom = homozygotes[`hom_${prefix}`]
-        const aF = this.singleAlleleFrequency(aC, aN)
-        aCTotal += aC
-        aNTotal += aN
-        homTotal += hom
-        aFTotal += aF
+        const aC = alleleCounts[`ac_${prefix}`];
+        const aN = alleleNumbers[`an_${prefix}`];
+        const hom = homozygotes[`hom_${prefix}`];
+        const aF = this.singleAlleleFrequency(aC, aN);
+        aCTotal += aC;
+        aNTotal += aN;
+        homTotal += hom;
+        aFTotal += aF;
 
         const element = {
-          aC: aC,
-          aN: aN,
-          hom: hom,
+          aC,
+          aN,
+          hom,
           aF: this.singleAlleleFrequency(aC, aN)
-        }
-        rowData[prefix] = element
-      })
+        };
+        rowData[prefix] = element;
+      });
       rowData.tot = {
         aC: aCTotal,
         aN: aNTotal,
         hom: homTotal,
         aF: this.round(aCTotal / aNTotal, 4)
-      }
-      return rowData
+      };
+      return rowData;
     },
-    singleAlleleFrequency (count, number) {
-      return this.round(count / number, 7)
+    singleAlleleFrequency(count, number) {
+      return this.round(count / number, 7);
     },
-    round (value, decimals) {
-      let returnValue = ''
+    round(value, decimals) {
+      let returnValue = '';
       if (value < 1) {
-        returnValue = value.toPrecision(2)
-      } else {
-        returnValue = Number(Math.round(`${value}e${decimals}`) + `e-${decimals}`)
+        returnValue = value.toPrecision(2);
       }
-      return returnValue
+      else {
+        returnValue = Number(Math.round(`${value}e${decimals}`) + `e-${decimals}`);
+      }
+      return returnValue;
     },
-    hitMyVariant () {
-      const baseURL = 'https://myvariant.info/v1/query'
+    hitMyVariant() {
+      const baseURL = 'https://myvariant.info/v1/query';
       axios.get(baseURL, {
         params: {
           q: `${this.curieMap[this.nodePrefix.prefix]}:${this.nodePrefix.identifier}`,
           fields: 'exac'
         }
       })
-        .then((resp) => {
+        .then(resp => {
           if (resp.data.total === 1) {
-            const exacData = resp.data.hits[0].exac
+            const exacData = resp.data.hits[0].exac;
             if (exacData) {
-              const alleleCounts = exacData.ac
-              const alleleNumbers = exacData.an
-              const homozygotes = exacData.hom
-              const exacURL = 'https://exac.broadinstitute.org/variant/'
+              const alleleCounts = exacData.ac;
+              const alleleNumbers = exacData.an;
+              const homozygotes = exacData.hom;
+              const exacURL = 'https://exac.broadinstitute.org/variant/';
               const exacIDParams = [
                 exacData.chrom,
                 exacData.pos,
                 exacData.ref,
                 exacData.alt
-              ].join('-')
-              this.exacID = `${exacURL}${exacIDParams}`
+              ].join('-');
+              this.exacID = `${exacURL}${exacIDParams}`;
               const prefixes = [
                 'sas',
                 'oth',
@@ -199,19 +201,19 @@ export default {
                 'afr',
                 'eas',
                 'fin'
-              ]
-              this.rowData = this.buildRowData(prefixes, alleleCounts, alleleNumbers, homozygotes)
-              this.showTable = true
+              ];
+              this.rowData = this.buildRowData(prefixes, alleleCounts, alleleNumbers, homozygotes);
+              this.showTable = true;
             }
           }
         })
-        .catch((err) => {
+        .catch(err => {
           // eslint-disable-next-line
             console.log(err);
-        })
+        });
     }
   }
-}
+};
 </script>
 <style>
     #vue-exac {

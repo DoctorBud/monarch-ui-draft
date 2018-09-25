@@ -172,8 +172,9 @@
 </template>
 
 <script>
-import * as MA from '../monarchAccess'
-const debounce = require('lodash/debounce')
+import * as MA from '@/monarchAccess';
+
+const debounce = require('lodash/debounce');
 
 const exampleSearches = [
   {
@@ -195,12 +196,12 @@ const exampleSearches = [
     searchString: 'Shh',
     category: 'gene'
   }
-]
+];
 export default {
   name: 'AutoComplete',
   filters: {
-    allLower (word) {
-      return word.toLowerCase()
+    allLower(word) {
+      return word.toLowerCase();
     }
   },
   props: {
@@ -215,10 +216,10 @@ export default {
       default: ''
     }
   },
-  data () {
+  data() {
     return {
       selected: [],
-      exampleSearches: exampleSearches,
+      exampleSearches,
       options: [
         { text: 'Gene', value: 'gene' },
         { text: 'Genotype', value: 'genotype' },
@@ -232,22 +233,23 @@ export default {
       open: false,
       current: 0,
       loading: false
-    }
+    };
   },
-  mounted () {
+  mounted() {
     if (this.singleCategory) {
-      this.selected.push(this.singleCategory)
+      this.selected.push(this.singleCategory);
     }
   },
   methods: {
     debounceInput: debounce(
       function () {
-        this.fetchData()
-      }, 500, { leading: false, trailing: true }),
-    async fetchData () {
+        this.fetchData();
+      }, 500, { leading: false, trailing: true }
+    ),
+    async fetchData() {
       try {
-        const selected = this.selected
-        let searchResponse = await MA.getSearchTermSuggestions(this.value, selected)
+        const selected = this.selected;
+        const searchResponse = await MA.getSearchTermSuggestions(this.value, selected);
         searchResponse.docs.forEach(elem => {
           const resultPacket = {
             match: elem.match,
@@ -256,115 +258,118 @@ export default {
             curie: elem.id,
             highlight: elem.highlight,
             has_hl: elem.has_highlight
-          }
-          this.suggestions.push(resultPacket)
-        })
-        this.open = true
-        this.loading = false
-      } catch (e) {
-        console.log('nodeResponse ERROR', e, this)
+          };
+          this.suggestions.push(resultPacket);
+        });
+        this.open = true;
+        this.loading = false;
+      }
+      catch (e) {
+        console.log('nodeResponse ERROR', e, this);
       }
     },
-    enter () {
-      const currentData = this.suggestions[this.current]
+    enter() {
+      const currentData = this.suggestions[this.current];
       if (!this.singleCategory) {
-        this.$router.push({ path: `/${currentData.category}/${currentData.curie}` })
-      } else {
-        this.$emit('interface', this.suggestions[this.current])
+        this.$router.push({ path: `/${currentData.category}/${currentData.curie}` });
       }
-      this.value = ''
-      this.open = false
-      this.suggestions = []
+      else {
+        this.$emit('interface', this.suggestions[this.current]);
+      }
+      this.value = '';
+      this.open = false;
+      this.suggestions = [];
     },
-    up () {
+    up() {
       if (this.current > 0) {
-        this.current -= 1
+        this.current -= 1;
       }
     },
-    down () {
+    down() {
       if (this.current < this.suggestions.length - 1) {
-        this.current += 1
+        this.current += 1;
       }
     },
-    isActive (index) {
-      return index === this.current
+    isActive(index) {
+      return index === this.current;
     },
-    mouseOver (index) {
-      this.current = index
+    mouseOver(index) {
+      this.current = index;
     },
-    suggestionClick (index) {
-      const currentData = this.suggestions[index]
+    suggestionClick(index) {
+      const currentData = this.suggestions[index];
       if (!this.singleCategory) {
-        this.$router.push({ path: `/${currentData.category}/${currentData.curie}` })
-      } else {
-        this.$emit('interface', this.suggestions[index])
+        this.$router.push({ path: `/${currentData.category}/${currentData.curie}` });
       }
-      this.value = ''
-      this.open = false
-      this.suggestions = []
+      else {
+        this.$emit('interface', this.suggestions[index]);
+      }
+      this.value = '';
+      this.open = false;
+      this.suggestions = [];
     },
-    showMore () {
+    showMore() {
       // window.location = `/search/${this.value}`;
-      this.$router.push({ path: `/search/${this.value}` })
+      this.$router.push({ path: `/search/${this.value}` });
     },
-    clearSearch () {
-      this.suggestions = []
-      this.value = ''
+    clearSearch() {
+      this.suggestions = [];
+      this.value = '';
     },
-    categoryMap (catList) {
+    categoryMap(catList) {
       const validCats = {
         'gene': 'gene',
         'variant locus': 'variant',
         'phenotype': 'phenotype',
         'genotype': 'genotype',
         'disease': 'disease'
-      }
+      };
       const categoryObj = catList.reduce((map, cat) => {
-        cat = validCats[cat]
+        cat = validCats[cat];
         if (cat) {
-          map[cat] = cat
+          map[cat] = cat;
         }
-        return map
-      }, {})
-      return categoryObj.gene ||
-        categoryObj.variant ||
-        Object.keys(categoryObj).join(',')
+        return map;
+      }, {});
+      return categoryObj.gene
+        || categoryObj.variant
+        || Object.keys(categoryObj).join(',');
     },
-    checkTaxon (taxon) {
+    checkTaxon(taxon) {
       if (typeof taxon === 'string') {
-        return taxon
+        return taxon;
       }
     },
-    useExample (searchString, category) {
-      this.selected = []
+    useExample(searchString, category) {
+      this.selected = [];
       if (category) {
-        this.selected.push(category)
+        this.selected.push(category);
       }
 
-      this.value = searchString
+      this.value = searchString;
     }
   },
   watch: {
-    value: function () {
-      this.suggestions = []
+    value() {
+      this.suggestions = [];
       if (!this.value) {
-        this.open = false
+        this.open = false;
       }
     },
-    selected: function (newValue) {
+    selected(newValue) {
       if (!this.singleCategory) {
-        this.suggestions = []
+        this.suggestions = [];
         if (this.value.length > 0) {
-          this.fetchData()
+          this.fetchData();
         }
       }
     }
   }
-}
+};
 </script>
 
 <style lang="scss">
-@import "../style/prelude";
+@import "~@/style/variables";
 
 .monarch-autocomplete {
   .text-align-right {

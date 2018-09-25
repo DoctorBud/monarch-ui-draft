@@ -31,7 +31,7 @@
     @click="toggleNeighborhood()"/>
 
   <div
-    class="container-fluid title-bar">
+    class="title-bar">
     <div
       v-if="!node">
       <div
@@ -70,7 +70,7 @@
         class="node-synonyms">
         <span
           v-for="s in synonyms"
-          :key="s"
+          :key="s.val"
           class="synonym"
         >
           {{ s.val }}
@@ -105,7 +105,7 @@
         <b>References:</b>&nbsp;
         <span
           v-for="r in xrefs"
-          :key="r">
+          :key="r.url">
           <router-link
             v-if="r.url.indexOf('/') === 0"
             :to="r.url">
@@ -143,7 +143,7 @@
 
         <span
           v-for="r in equivalentClasses"
-          :key="r">
+          :key="r.id">
           <router-link
             v-if="r.id"
             :to="'/resolve/' + r.id">
@@ -174,8 +174,9 @@
     <div
       v-if="!expandedCard && hasExacGene"
       class="row">
-      <exac-gene
+<!--       <exac-gene
         :node-id="nodeId"/>
+ -->
     </div>
     <div
       v-if="expandedCard"
@@ -199,11 +200,12 @@
 
 <script>
 
-import _ from 'underscore'
-import * as MA from '../monarchAccess'
+import us from 'underscore';
+import * as MA from '@/monarchAccess';
 
-import NodeSidebar from '@/components/NodeSidebar.vue'
-import NodeCard from '@/components/NodeCard.vue'
+import NodeSidebar from '@/components/NodeSidebar.vue';
+import NodeCard from '@/components/NodeCard.vue';
+import AssocTable from '@/components/AssocTable.vue';
 
 const availableCardTypes = [
   'anatomy',
@@ -263,9 +265,10 @@ export default {
   components: {
     'node-sidebar': NodeSidebar,
     'node-card': NodeCard,
+    'assoc-table': AssocTable,
   },
   /* eslint quote-props: 0 */
-  data () {
+  data() {
     return {
       isNeighborhood: false,
       facetObject: {
@@ -337,9 +340,10 @@ export default {
       contentBody: '',
       progressTimer: null,
       path: null,
-      icons: icons,
-      labels: labels,
+      icons,
+      labels,
       nodeId: null,
+      nodeType: null,
       nodeDebug: null,
       nodeDefinition: null,
       nodeLabel: null,
@@ -378,54 +382,54 @@ export default {
           field: 'source'
         }
       ]
-    }
+    };
   },
 
   watch: {
-    $route (to, _from) {
+    $route(to, _from) {
       // Only fetchData if the path is different.
       // hash changes are currently handled by monarch-tabs.js
       // within the loaded MonarchLegacy component.
 
       if (to.path !== this.path) {
-        this.fetchData()
+        this.fetchData();
       }
     }
   },
-  created () {
+  created() {
     // console.log('created', this.nodeId);
   },
 
-  updated () {
+  updated() {
     // console.log('updated', this.nodeId);
   },
 
-  destroyed () {
+  destroyed() {
     // console.log('destroyed', this.nodeId);
   },
 
-  mounted () {
-    this.fetchData()
+  mounted() {
+    this.fetchData();
   },
 
   methods: {
-    expandCard (cardType) {
-      this.$router.replace({ hash: cardType })
-      this.expandedCard = cardType
+    expandCard(cardType) {
+      this.$router.replace({ hash: cardType });
+      this.expandedCard = cardType;
     },
 
-    toggleNeighborhood () {
-      this.isNeighborhood = !this.isNeighborhood
+    toggleNeighborhood() {
+      this.isNeighborhood = !this.isNeighborhood;
     },
 
-    generateDefinitionText (nodeType, node) {
-      let result = node.description
+    generateDefinitionText(nodeType, node) {
+      let result = node.description;
 
       if (nodeType === 'gene') {
-        result = 'MYGENEFIXME'
+        result = 'MYGENEFIXME';
       }
 
-      return result
+      return result;
     },
 
     // TIP/QUESTION: This applyResponse is called asynchronously via the function
@@ -434,119 +438,115 @@ export default {
     // need to apply $nextTick() to deal with this. Keep an eye out for UI fields
     // not updating or having undefined values.
     //
-    applyResponse (response) {
+    applyResponse(response) {
       // console.log('applyResponse', response);
-      const that = this
-      this.node = response
+      const that = this;
+      this.node = response;
       // this.nodeDebug = JSON.stringify(response, null, 2);
 
-      const neighborhood = MA.getNeighborhoodFromResponse(response)
-      const nodeLabelMap = neighborhood.nodeLabelMap
-      const equivalentClasses = neighborhood.equivalentClasses
-      const superclasses = neighborhood.superclasses
-      const subclasses = neighborhood.subclasses
+      const neighborhood = MA.getNeighborhoodFromResponse(response);
+      const nodeLabelMap = neighborhood.nodeLabelMap;
+      const equivalentClasses = neighborhood.equivalentClasses;
+      const superclasses = neighborhood.superclasses;
+      const subclasses = neighborhood.subclasses;
 
-      this.superclasses = _.map(_.uniq(superclasses), c => {
-        return {
-          id: c,
-          label: nodeLabelMap[c]
-        }
-      })
-      this.subclasses = _.map(_.uniq(subclasses), c => {
-        return {
-          id: c,
-          label: nodeLabelMap[c]
-        }
-      })
-      this.equivalentClasses = _.map(_.uniq(equivalentClasses), c => {
-        return {
-          id: c,
-          label: nodeLabelMap[c]
-        }
-      })
+      this.superclasses = us.map(us.uniq(superclasses), c => ({
+        id: c,
+        label: nodeLabelMap[c]
+      }));
+      this.subclasses = us.map(us.uniq(subclasses), c => ({
+        id: c,
+        label: nodeLabelMap[c]
+      }));
+      this.equivalentClasses = us.map(us.uniq(equivalentClasses), c => ({
+        id: c,
+        label: nodeLabelMap[c]
+      }));
       // console.log('superclasses', this.superclasses);
       // console.log('subclasses', this.subclasses);
       // console.log('equivalentClasses', this.equivalentClasses);
 
-      this.synonyms = this.node.synonyms
-      this.xrefs = this.node.xrefs
-      this.inheritance = this.node.inheritance ? this.node.inheritance[0] : null
-      this.nodeDefinition = this.generateDefinitionText(this.nodeType, this.node)
-      this.nodeLabel = this.node.label
+      this.synonyms = this.node.synonyms;
+      this.xrefs = this.node.xrefs;
+      this.inheritance = this.node.inheritance ? this.node.inheritance[0] : null;
+      this.nodeDefinition = this.generateDefinitionText(this.nodeType, this.node);
+      this.nodeLabel = this.node.label;
       this.nodeCategory = this.node.categories
         ? this.node.categories[0].toLowerCase()
-        : this.nodeType
-      this.nodeIcon = this.icons[this.nodeCategory]
-      this.phenotypeIcon = this.icons.phenotype
-      this.geneIcon = this.icons.gene
-      this.modelIcon = this.icons.model
-      this.hasExacGene = (this.nodeType === 'gene' || this.nodeType === 'variant')
+        : this.nodeType;
+      this.nodeIcon = this.icons[this.nodeCategory];
+      this.phenotypeIcon = this.icons.phenotype;
+      this.geneIcon = this.icons.gene;
+      this.modelIcon = this.icons.model;
+      this.hasExacGene = (this.nodeType === 'gene' || this.nodeType === 'variant');
 
-      const nonEmptyCards = []
+      const nonEmptyCards = [];
       this.availableCards.forEach(cardType => {
-        const count = that.node.counts[cardType]
-        that.counts[cardType] = count ? count.totalCount : 0
+        const count = that.node.counts[cardType];
+        that.counts[cardType] = count ? count.totalCount : 0;
         if (that.counts[cardType] > 0) {
-          nonEmptyCards.push(cardType)
+          nonEmptyCards.push(cardType);
         }
-      })
-      this.nonEmptyCards = nonEmptyCards
+      });
+      this.nonEmptyCards = nonEmptyCards;
 
-      const hash = this.$router.currentRoute.hash
+      const hash = this.$router.currentRoute.hash;
       if (hash.length > 1) {
-        const cardType = hash.slice(1)
+        const cardType = hash.slice(1);
         this.$nextTick(_ => {
-          this.expandCard(cardType)
-        })
+          this.expandCard(cardType);
+        });
       }
     },
 
-    startProgress () {
-      const that = this
+    startProgress() {
+      const that = this;
       if (that.progressTimer) {
-        console.log('startProgress.... leftover progressTimer')
-      } else {
-        that.progressTimer = setTimeout(function timeout () {
-          that.progressTimer = null
-        }, 500)
+        console.log('startProgress.... leftover progressTimer');
+      }
+      else {
+        that.progressTimer = setTimeout(function timeout() {
+          that.progressTimer = null;
+        }, 500);
       }
     },
 
-    clearProgress () {
-      const that = this
-      that.$nextTick(function () {
+    clearProgress() {
+      const that = this;
+      that.$nextTick(function clearProgress() {
         if (that.progressTimer) {
-          clearTimeout(that.progressTimer)
-          that.progressTimer = null
+          clearTimeout(that.progressTimer);
+          that.progressTimer = null;
         }
-      })
+      });
     },
 
-    async fetchData () {
-      const that = this
-      const path = that.$route.fullPath
+    async fetchData() {
+      const that = this;
+      const path = that.$route.fullPath;
 
-      this.path = that.$route.path
-      this.nodeId = this.$route.params.id
-      this.nodeType = this.path.split('/')[1]
+      this.path = that.$route.path;
+      this.nodeId = this.$route.params.id;
+      this.nodeType = this.path.split('/')[1];
 
       // TIP: setup the pre-fetch state, waiting for the async result
-      this.node = null
-      this.nodeError = null
-      this.expandedCard = null
-      this.nonEmptyCards = []
-      this.isNeighborhood = false
-      this.startProgress()
+      this.node = null;
+      this.nodeError = null;
+      this.expandedCard = null;
+      this.nonEmptyCards = [];
+      this.isNeighborhood = false;
+      this.startProgress();
 
       try {
-        let nodeResponse = await MA.getNodeSummary(this.nodeId, this.nodeType)
+        const nodeResponse = await MA.getNodeSummary(this.nodeId, this.nodeType);
 
-        that.applyResponse(nodeResponse)
-        that.clearProgress()
-      } catch (e) {
-        console.log('nodeResponse ERROR', e, that)
-        that.nodeError = e
-        that.clearProgress()
+        that.applyResponse(nodeResponse);
+        that.clearProgress();
+      }
+      catch (e) {
+        console.log('nodeResponse ERROR', e, that);
+        that.nodeError = e;
+        that.clearProgress();
       }
 
       // TIP: Don't put anything useful here, because this will execute BEFORE
@@ -554,12 +554,12 @@ export default {
       // a useful result or error.
     }
   }
-}
+};
 
 </script>
 
 <style lang="scss">
-@import "../style/prelude";
+@import "~@/style/variables";
 
 $sidebar-content-width: 500px;
 $sidebar-width: 200px;
@@ -899,6 +899,7 @@ div.container-cards .node-cards-section {
   padding: 5px;
   padding-left: ($sidebar-width + 5);
   margin: 0;
+  width: 100%;
   z-index: 1;
 }
 

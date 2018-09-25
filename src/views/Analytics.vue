@@ -66,17 +66,17 @@ export default {
   name: 'Analytics',
   components: {
   },
-  data () {
+  data() {
     return {
-    }
+    };
   },
-  mounted () {
-    console.log('mounted')
+  mounted() {
+    console.log('mounted');
     this.$nextTick(_ => {
       // navbar_search_init('home_search', 'home_search_form');
-    })
+    });
   }
-}
+};
 </script>
 
 <style>

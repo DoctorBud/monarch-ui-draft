@@ -58,7 +58,8 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
+import axios from 'axios';
+
 export default {
   props: {
     nodeId: {
@@ -66,7 +67,7 @@ export default {
       required: true
     }
   },
-  data () {
+  data() {
     return {
       exacGene: '',
       showGeneExac: false,
@@ -76,45 +77,46 @@ export default {
         'ENSEMBL': 'ensembl.gene',
         'NCBIGene': 'entrezgene'
       }
-    }
+    };
   },
   computed: {
-    nodePrefix () {
-      const splitID = this.nodeId.split(':')
+    nodePrefix() {
+      const splitID = this.nodeId.split(':');
       return {
         prefix: splitID[0],
         identifier: splitID[1]
-      }
+      };
     }
   },
-  mounted () {
+  mounted() {
     if (this.nodePrefix.prefix in this.curieMap) {
-      this.hitMyGene()
+      this.hitMyGene();
     }
   },
   methods: {
-    round (value, decimals) {
-      let returnValue = ''
+    round(value, decimals) {
+      let returnValue = '';
       if (value < 1) {
-        returnValue = value.toPrecision(2)
-      } else {
-        returnValue = Number(Math.round(`${value}e${decimals}`) + `e-${decimals}`)
+        returnValue = value.toPrecision(2);
       }
-      return returnValue
+      else {
+        returnValue = Number(Math.round(`${value}e${decimals}`) + `e-${decimals}`);
+      }
+      return returnValue;
     },
-    hitMyGene () {
-      const baseURL = 'https://mygene.info/v3/query/'
-      const mgCurie = `${this.curieMap[this.nodePrefix.prefix]}:${this.nodePrefix.identifier}`
+    hitMyGene() {
+      const baseURL = 'https://mygene.info/v3/query/';
+      const mgCurie = `${this.curieMap[this.nodePrefix.prefix]}:${this.nodePrefix.identifier}`;
       axios.get(baseURL, {
         params: {
           q: mgCurie,
           fields: 'exac'
         }
       })
-        .then((resp) => {
-          const hits = resp.data.hits[0]
+        .then(resp => {
+          const hits = resp.data.hits[0];
           if (hits.exac) {
-            this.showGeneExac = true
+            this.showGeneExac = true;
             this.exacGene = {
               exp_syn: this.round(hits.exac.all.exp_syn, 1),
               n_syn: this.round(hits.exac.all.n_syn, 1),
@@ -126,16 +128,16 @@ export default {
               n_lof: this.round(hits.exac.all.n_lof, 1),
               p_li: this.round(hits.exac.all.p_li, 1),
               link: resp.request.responseURL
-            }
+            };
           }
         })
-        .catch((err) => {
+        .catch(err => {
           // eslint-disable-next-line
             console.log(err);
-        })
+        });
     }
   }
-}
+};
 </script>
 <style>
     #exacGene {

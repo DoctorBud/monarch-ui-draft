@@ -64,16 +64,6 @@
           text="About"
         >
           <b-dropdown-item
-            to="/about">
-            Debug
-          </b-dropdown-item>
-
-          <b-dropdown-item
-            to="/analytics">
-            Analytics
-          </b-dropdown-item>
-
-          <b-dropdown-item
             to="/page/about">
             About Monarch
           </b-dropdown-item>
@@ -168,32 +158,32 @@
 </template>
 
 <script>
-import MonarchAutocomplete from '@/components/MonarchAutocomplete.vue'
+import MonarchAutocomplete from '@/components/MonarchAutocomplete.vue';
 
 export default {
   name: 'MonarchNavbar',
   components: {
     MonarchAutocomplete
   },
-  data () {
+  data() {
     return {
-    }
+    };
   },
-  mounted () {
+  mounted() {
     this.$nextTick(_ => {
       // navbar_search_init();
-    })
+    });
   },
   methods: {
-    searchSubmit () {
-      console.log('searchSubmit')
+    searchSubmit() {
+      console.log('searchSubmit');
     }
   }
-}
+};
 </script>
 
 <style lang="scss">
-@import "../style/prelude.scss";
+@import "../style/variables.scss";
 
 nav#monarchng-navbar.navbar .navbar-brand {
   height: $navbar-height;

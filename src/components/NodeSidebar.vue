@@ -8,7 +8,7 @@
     <div class="sidebar-content">
       <div
         v-for="c in superclasses"
-        :key="c"
+        :key="c.id"
         class="row superclass">
         <div class="col-12">
           <router-link
@@ -26,7 +26,7 @@
 
       <div
         v-for="c in subclasses"
-        :key="c"
+        :key="c.id"
         class="row subclass">
         <div class="col-12">
           <router-link
@@ -67,7 +67,7 @@
       </li>
 
       <li
-:class="{ active: !expandedCard }"
+        :class="{ active: !expandedCard }"
         class="list-group-item list-group-item-squat">
         <a
           href="#"
@@ -78,7 +78,7 @@
       </li>
 
       <li
-v-for="cardType in cardsToDisplay"
+        v-for="cardType in cardsToDisplay"
         :class="{ active: expandedCard === cardType }"
         :key="cardType"
         class="list-group-item">
@@ -86,9 +86,12 @@ v-for="cardType in cardsToDisplay"
           :href="'#' + cardType"
           @click="expandCard(cardType)">
           <img
-:src="$parent.icons[cardType]"
-class="entity-type-icon">
-          <span class="list-group-item-value">{{ $parent.labels[cardType] }} ({{ cardCounts[cardType] }})</span>
+            :src="$parent.icons[cardType]"
+            class="entity-type-icon">
+          <span
+            class="list-group-item-value">
+            {{ $parent.labels[cardType] }} ({{ cardCounts[cardType] }})
+          </span>
         </a>
       </li>
       <li
@@ -97,6 +100,7 @@ class="entity-type-icon">
 
         <assoc-facets
           v-model="facetObject.species"/>
+
       </li>
     </ul>
 </div>
@@ -105,10 +109,16 @@ class="entity-type-icon">
 </template>
 
 <script>
-import * as MA from '../monarchAccess'
+import * as MA from '@/monarchAccess';
+
+import AssocFacets from '@/components/AssocFacets.vue';
 
 export default {
   name: 'NodeSidebar',
+
+  components: {
+    'assoc-facets': AssocFacets,
+  },
 
   /* eslint vue/require-default-prop: 0 */
   props: {
@@ -123,42 +133,42 @@ export default {
     isNeighborhood: Boolean
   },
 
-  data () {
+  data() {
     return {
       debugServerName: MA.debugServerName()
-    }
+    };
   },
-  created () {
+  created() {
     // console.log('created', this.nodeId);
   },
 
-  updated () {
+  updated() {
     // console.log('updated', this.nodeId);
   },
 
-  destroyed () {
+  destroyed() {
     // console.log('destroyed', this.nodeId);
   },
 
-  mounted () {
+  mounted() {
   },
 
   methods: {
-    expandCard (cardType) {
-      this.$emit('expand-card', cardType)
+    expandCard(cardType) {
+      this.$emit('expand-card', cardType);
     },
 
-    toggleNeighborhood () {
+    toggleNeighborhood() {
       // this.isNeighborhood = !this.isNeighborhood;
-      this.$emit('toggle-neighborhood')
+      this.$emit('toggle-neighborhood');
     }
   }
-}
+};
 
 </script>
 
 <style lang="scss">
-@import "../style/prelude";
+@import "~@/style/variables";
 
 $sidebar-content-width: 500px;
 $sidebar-width: 200px;

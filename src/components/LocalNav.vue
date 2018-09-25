@@ -52,9 +52,10 @@
   </div>
 </template>
 <script>
-import _ from 'underscore'
-import * as MA from 'monarchAccess'
-const uniqBy = require('lodash/uniqBy')
+import _ from 'underscore';
+import * as MA from '@/monarchAccess';
+
+const uniqBy = require('lodash/uniqBy');
 
 export default {
   props: {
@@ -63,7 +64,7 @@ export default {
       required: true
     }
   },
-  data () {
+  data() {
     return {
       equivalentClasses: '',
       rootTerm: '',
@@ -71,64 +72,58 @@ export default {
       subclasses: [],
       siblings: [],
       dataFetched: false
-    }
+    };
   },
-  mounted () {
-    this.getCurieRelationships()
+  mounted() {
+    this.getCurieRelationships();
   },
   methods: {
-    async getCurieRelationships () {
-      const that = this
+    async getCurieRelationships() {
+      const that = this;
       try {
-        let searchResponse = await MA.getNodeSummary(this.anchorId, 'phenotype')
-        this.familyData = searchResponse
-        this.sortRelationships()
-        this.dataFetched = true
-      } catch (e) {
-        that.dataError = e
-        console.log('BioLink Error', e)
+        const searchResponse = await MA.getNodeSummary(this.anchorId, 'phenotype');
+        this.familyData = searchResponse;
+        this.sortRelationships();
+        this.dataFetched = true;
+      }
+      catch (e) {
+        that.dataError = e;
+        console.log('BioLink Error', e);
       }
     },
-    emitSelection (termLabel, termId) {
+    emitSelection(termLabel, termId) {
       this.$emit('interface',
         {
           curie: termId,
           match: termLabel,
           root: this.rootTerm.id
-        }
-      )
+        });
     },
-    sortRelationships () {
+    sortRelationships() {
       this.rootTerm = {
         id: this.familyData.id,
         label: this.familyData.label,
         synonyms: this.familyData.synonyms
-      }
+      };
 
-      const neighborhood = MA.getNeighborhoodFromResponse(this.familyData)
-      const nodeLabelMap = neighborhood.nodeLabelMap
-      const equivalentClasses = neighborhood.equivalentClasses
-      const superclasses = neighborhood.superclasses
-      const subclasses = neighborhood.subclasses
+      const neighborhood = MA.getNeighborhoodFromResponse(this.familyData);
+      const nodeLabelMap = neighborhood.nodeLabelMap;
+      const equivalentClasses = neighborhood.equivalentClasses;
+      const superclasses = neighborhood.superclasses;
+      const subclasses = neighborhood.subclasses;
 
-      this.superclasses = _.map(_.uniq(superclasses), c => {
-        return {
-          id: c,
-          label: nodeLabelMap[c]
-        }
-      })
-      this.subclasses = _.map(_.uniq(subclasses), c => {
-        return {
-          id: c,
-          label: nodeLabelMap[c]
-        }
-      })
-      this.equivalentClasses = _.map(_.uniq(equivalentClasses), c => {
-        return {
-          id: c,
-          label: nodeLabelMap[c]
-        }
-      })
+      this.superclasses = _.map(_.uniq(superclasses), c => ({
+        id: c,
+        label: nodeLabelMap[c]
+      }));
+      this.subclasses = _.map(_.uniq(subclasses), c => ({
+        id: c,
+        label: nodeLabelMap[c]
+      }));
+      this.equivalentClasses = _.map(_.uniq(equivalentClasses), c => ({
+        id: c,
+        label: nodeLabelMap[c]
+      }));
 
       /*
       // This code no longer works, as MonarchAccess returns super/sub/equiv in a different form.
@@ -152,7 +147,7 @@ export default {
 */
     }
   }
-}
+};
 </script>
 <style scoped>
   .content {

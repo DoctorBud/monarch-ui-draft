@@ -37,48 +37,48 @@ export default {
     'parentNodeId'
   ],
 
-  data () {
+  data() {
     return {
       isSelected: false,
       cardIcon: null,
       cardLabel: null
-    }
+    };
   },
 
-  created () {
+  created() {
   },
 
-  updated () {
+  updated() {
   },
 
-  destroyed () {
+  destroyed() {
   },
 
-  mounted () {
-    this.cardIcon = this.$parent.icons[this.cardType]
-    this.cardLabel = this.$parent.labels[this.cardType]
+  mounted() {
+    this.cardIcon = this.$parent.icons[this.cardType];
+    this.cardLabel = this.$parent.labels[this.cardType];
   },
 
   methods: {
-    toggleSelected () {
-      this.isSelected = !this.isSelected
+    toggleSelected() {
+      this.isSelected = !this.isSelected;
       if (this.isSelected) {
-        this.$emit('expand-card', this)
+        this.$emit('expand-card', this);
       }
     },
 
-    pluralize (label, count) {
-      const s = count === 1 ? '' : 's'
-      return `${count} ${label}${s}`
+    pluralize(label, count) {
+      const s = count === 1 ? '' : 's';
+      return `${count} ${label}${s}`;
     }
   }
 
-}
+};
 
 </script>
 
 <style lang="scss">
-@import "../style/prelude";
+@import "~@/style/variables";
 
 $card-height: 110px;
 $card-width: 300px;

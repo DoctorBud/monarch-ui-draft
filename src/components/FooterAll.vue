@@ -32,7 +32,7 @@
 </script>
 
 <style lang="scss">
-@import "../style/prelude";
+@import "~@/style/variables";
 
 .footer-all{
   padding: 15px;
