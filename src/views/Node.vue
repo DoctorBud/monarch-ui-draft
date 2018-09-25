@@ -36,13 +36,13 @@
       v-if="!node">
       <div
         v-if="nodeError">
-        <sm>
+        <small>
           <h6>
             Error loading {{ labels[nodeType] }}: {{ nodeId }}
           </h6>
           <pre
             class="pre-scrollable">{{ nodeError }}</pre>
-        </sm>
+        </small>
       </div>
       <div
         v-else>
@@ -174,9 +174,9 @@
     <div
       v-if="!expandedCard && hasExacGene"
       class="row">
-<!--       <exac-gene
+      <exac-gene
         :node-id="nodeId"/>
- -->
+
     </div>
     <div
       v-if="expandedCard"
@@ -206,6 +206,8 @@ import * as MA from '@/monarchAccess';
 import NodeSidebar from '@/components/NodeSidebar.vue';
 import NodeCard from '@/components/NodeCard.vue';
 import AssocTable from '@/components/AssocTable.vue';
+import ExacGeneSummary from '@/components/ExacGeneSummary.vue';
+import ExacVariantTable from '@/components/ExacVariantTable.vue';
 
 const availableCardTypes = [
   'anatomy',
@@ -266,6 +268,8 @@ export default {
     'node-sidebar': NodeSidebar,
     'node-card': NodeCard,
     'assoc-table': AssocTable,
+    'exac-gene': ExacGeneSummary,
+    'exac-variant': ExacVariantTable,
   },
   /* eslint quote-props: 0 */
   data() {

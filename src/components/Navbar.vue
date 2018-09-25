@@ -170,14 +170,8 @@ export default {
     };
   },
   mounted() {
-    this.$nextTick(_ => {
-      // navbar_search_init();
-    });
   },
   methods: {
-    searchSubmit() {
-      console.log('searchSubmit');
-    }
   }
 };
 </script>

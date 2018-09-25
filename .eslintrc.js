@@ -39,6 +39,9 @@ module.exports = {
     'prefer-arrow-callback': 0,
     'prefer-template': 0,
     'comma-dangle': 0,
+    'max-len': 0,
+    'standard/no-callback-literal': 0,
+    'no-param-reassign': 0
   },
   parserOptions: {
     parser: 'babel-eslint'

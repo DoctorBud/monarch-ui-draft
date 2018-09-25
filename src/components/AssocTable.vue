@@ -86,6 +86,7 @@
               >
                 <ul
                   v-for="evi in data.item.evidence"
+                  :key="evi.id"
                   class="list-bullets"
                 >
                   <li>
@@ -104,6 +105,7 @@
               >
                 <ul
                   v-for="ref in data.item.references"
+                  :key="ref"
                   class="list-bullets"
                 >
                   <li>
@@ -122,6 +124,7 @@
               >
                 <ul
                   v-for="source in data.item.sources"
+                  :key="source"
                   class="list-bullets"
                 >
                   <li>
@@ -165,7 +168,7 @@
 
 <script>
 import * as MA from '@/monarchAccess';
-import JsonTree from 'vue-json-tree'
+import JsonTree from 'vue-json-tree';
 
 export default {
   components: {
@@ -359,9 +362,6 @@ export default {
         // });
         // that.currentPage = 1;
         that.populateRows();
-        that.dataError = {
-          response: searchResponse.data
-        };
       }
       catch (e) {
         that.dataError = e;

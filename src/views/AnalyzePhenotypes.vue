@@ -38,7 +38,7 @@
               dismissible
               @dismissed="showPhenotypeAlert=false"
             >
-              Error: '{{...rejectedPhenotypeCuries}}' Please enter phenotype curies from HP, MP, or ZP!
+              Error: '{{ rejectedPhenotypeCuries }}' Please enter phenotype curies from HP, MP, or ZP!
             </b-alert>
           </tab-content>
           <tab-content title="Select Comparables">

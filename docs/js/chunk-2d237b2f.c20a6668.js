@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d237b2f"],{fbda:function(o,e,n){"use strict";n.r(e),n.d(e,"toggleCssClassName",function(){return s}),console.info('Check your "Network" tab, a chunk of code was loaded on demand by the following snippet:'),console.info("import('./scripts/css-utils.js').then(module => /* do something */).catch(e => console.error(e))");var s=function(o,e){o.classList.toggle(e),"foo"===e&&console.log("hello")}}}]);
-//# sourceMappingURL=chunk-2d237b2f.c20a6668.js.map

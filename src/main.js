@@ -1,6 +1,5 @@
 import '@babel/polyfill';
 import Vue from 'vue';
-import './plugins/bootstrap-vue';
 import BootstrapVue from 'bootstrap-vue/dist/bootstrap-vue.esm';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
@@ -9,35 +8,29 @@ import './registerServiceWorker';
 
 import App from './App.vue';
 
+
+// Code for the SPA spinner, wh
+
+import '@/style/debug-logo-animation.scss';
+
 Vue.config.productionTip = false;
 
 Vue.use(BootstrapVue);
 
+const debugArea = document.querySelector('.debug-area');
+const debugSpinnerLink = document.querySelector('.debug-spinner');
+const debugLogos = global.document.querySelectorAll('.debug-spinner-logo');
+debugSpinnerLink.addEventListener('click', () => {
+  debugLogos[0].classList.toggle('rotate');
+  debugLogos[1].classList.toggle('rotate');
+});
 
 new Vue({
   router,
+  mounted() {
+    debugArea.style.display = 'block';
+    // debugLogos[0].style.display = 'block';
+    // debugLogos[1].style.display = 'block';
+  },
   render: h => h(App)
 }).$mount('#app');
-
-
-// Code for the SPA spinner, wh
-
-import "@/style/debug-logo-animation.scss";
-
-const testRequireEnsureLink = document.querySelector('.test-require-ensure');
-const logos = global.document.querySelectorAll('.fidget-spinner');
-
-testRequireEnsureLink.addEventListener('click', () => {
-  console.log('testRequireEnsureLink');
-  // the following won't be included in the original build but
-  // will be lazy loaded only when needed
-  import('./scripts/css-utils.js')
-    .then(module => {
-      const { toggleCssClassName } = module;
-      toggleCssClassName(logos[0], 'rotate');
-      toggleCssClassName(logos[1], 'rotate');
-      toggleCssClassName(testRequireEnsureLink, 'active');
-    })
-    .catch(error => console.error('Chunk loading failed', error));
-});
-

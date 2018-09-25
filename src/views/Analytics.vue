@@ -61,20 +61,18 @@
 </template>
 
 <script>
+import FooterAll from '@/components/FooterAll.vue';
 
 export default {
   name: 'Analytics',
   components: {
+    'footer-all': FooterAll,
   },
   data() {
     return {
     };
   },
   mounted() {
-    console.log('mounted');
-    this.$nextTick(_ => {
-      // navbar_search_init('home_search', 'home_search_form');
-    });
   }
 };
 </script>

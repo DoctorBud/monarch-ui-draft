@@ -11,10 +11,10 @@
  * See https://goo.gl/2aRDsh
  */
 
-importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.5.0/workbox-sw.js");
+importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.1/workbox-sw.js");
 
 importScripts(
-  "/monarch-ui-draft/precache-manifest.78245c540e17a8c2550b46d0ddf8e4b6.js"
+  "/monarch-ui-draft/precache-manifest.e77b99fd7e85659259339f9a53654f5c.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "monarch-ui"});

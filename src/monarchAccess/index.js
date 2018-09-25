@@ -1,10 +1,6 @@
 import _ from 'underscore';
 import axios from 'axios';
-import * as JSONAccess from './JSONAccess';
 import * as Servers from './servers';
-
-// Re-export stuff from JSONAccess into the MonarchAccess namespace
-export const { loadJSONXHR, loadJSONAxios } = JSONAccess;
 
 const serverConfiguration = Servers.serverConfigurations.development;
 const biolink = serverConfiguration.biolink_url;
@@ -194,7 +190,7 @@ async function getCountsForNode(nodeId, nodeType) {
     return associationsResultMap;
   }
   console.log('getCountsForNode', nodeId, nodeType, 'NO ASSOCIATIONS KNOWN');
-
+  return null;
 }
 
 export async function getNodeSummary(nodeId, nodeType) {

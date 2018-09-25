@@ -158,6 +158,7 @@
       class="p-0 m-0">
       <button
         v-for="(example, index) in exampleSearches"
+        :key="index"
         class="btn btn-outline-light m-1 py-0"
         role="button"
         @click="useExample(example.searchString, example.category)">
@@ -235,6 +236,22 @@ export default {
       loading: false
     };
   },
+  watch: {
+    value() {
+      this.suggestions = [];
+      if (!this.value) {
+        this.open = false;
+      }
+    },
+    selected(newValue) {
+      if (!this.singleCategory) {
+        this.suggestions = [];
+        if (this.value.length > 0) {
+          this.fetchData();
+        }
+      }
+    }
+  },
   mounted() {
     if (this.singleCategory) {
       this.selected.push(this.singleCategory);
@@ -242,7 +259,7 @@ export default {
   },
   methods: {
     debounceInput: debounce(
-      function () {
+      function debounceInput() {
         this.fetchData();
       }, 500, { leading: false, trailing: true }
     ),
@@ -325,9 +342,9 @@ export default {
         'disease': 'disease'
       };
       const categoryObj = catList.reduce((map, cat) => {
-        cat = validCats[cat];
-        if (cat) {
-          map[cat] = cat;
+        const catKey = validCats[cat];
+        if (catKey) {
+          map[catKey] = catKey;
         }
         return map;
       }, {});
@@ -339,6 +356,7 @@ export default {
       if (typeof taxon === 'string') {
         return taxon;
       }
+      return null;
     },
     useExample(searchString, category) {
       this.selected = [];
@@ -349,22 +367,6 @@ export default {
       this.value = searchString;
     }
   },
-  watch: {
-    value() {
-      this.suggestions = [];
-      if (!this.value) {
-        this.open = false;
-      }
-    },
-    selected(newValue) {
-      if (!this.singleCategory) {
-        this.suggestions = [];
-        if (this.value.length > 0) {
-          this.fetchData();
-        }
-      }
-    }
-  }
 };
 </script>
 

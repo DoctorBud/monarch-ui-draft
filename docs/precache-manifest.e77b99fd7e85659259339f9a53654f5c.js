@@ -12,20 +12,16 @@ self.__precacheManifest = [
     "url": "/monarch-ui-draft/img/team-garvan.05d897a1.png"
   },
   {
-    "revision": "3cb70fdde514e989fdc2",
-    "url": "/monarch-ui-draft/css/app.c628a917.css"
+    "revision": "a5d26384485a9324b6e3",
+    "url": "/monarch-ui-draft/css/app.445e7f7c.css"
   },
   {
-    "revision": "4b5d6e15ca207007ea60",
-    "url": "/monarch-ui-draft/js/chunk-2d237b2f.c20a6668.js"
+    "revision": "b173e9e26d840ea0a7f9",
+    "url": "/monarch-ui-draft/css/chunk-vendors.5d86c290.css"
   },
   {
-    "revision": "b3cd4bf366786668c125",
-    "url": "/monarch-ui-draft/css/chunk-vendors.02a0a6b1.css"
-  },
-  {
-    "revision": "b3cd4bf366786668c125",
-    "url": "/monarch-ui-draft/js/chunk-vendors.cdefd302.js"
+    "revision": "b173e9e26d840ea0a7f9",
+    "url": "/monarch-ui-draft/js/chunk-vendors.56866424.js"
   },
   {
     "revision": "e914b10839c1ccfc991ca85f0bb13048",
@@ -40,16 +36,16 @@ self.__precacheManifest = [
     "url": "/monarch-ui-draft/img/team-jackson.7b1eed8a.png"
   },
   {
-    "revision": "674f50d287a8c48dc19ba404d20fe713",
-    "url": "/monarch-ui-draft/fonts/fontawesome-webfont.674f50d2.eot"
-  },
-  {
     "revision": "af7ae505a9eed503f8b8e6982036873e",
     "url": "/monarch-ui-draft/fonts/fontawesome-webfont.af7ae505.woff2"
   },
   {
     "revision": "fee66e712a8a08eef5805a46892932ad",
     "url": "/monarch-ui-draft/fonts/fontawesome-webfont.fee66e71.woff"
+  },
+  {
+    "revision": "674f50d287a8c48dc19ba404d20fe713",
+    "url": "/monarch-ui-draft/fonts/fontawesome-webfont.674f50d2.eot"
   },
   {
     "revision": "b06871f281fee6b241d60582ae9369b9",
@@ -64,12 +60,12 @@ self.__precacheManifest = [
     "url": "/monarch-ui-draft/img/tax-heat-plotly.6e271a4e.png"
   },
   {
-    "revision": "60acf3466c9e4a52a0d2",
-    "url": "/monarch-ui-draft/js/analytics.da8c3e4b.js"
+    "revision": "d691805f1fe2c70d7e24",
+    "url": "/monarch-ui-draft/js/analytics.55a2ca42.js"
   },
   {
-    "revision": "3cb70fdde514e989fdc2",
-    "url": "/monarch-ui-draft/js/app.de5fe4f2.js"
+    "revision": "a5d26384485a9324b6e3",
+    "url": "/monarch-ui-draft/js/app.9b54403f.js"
   },
   {
     "revision": "2aa95d60aae7739f68ce58fa5bdc753e",
@@ -120,11 +116,11 @@ self.__precacheManifest = [
     "url": "/monarch-ui-draft/img/icon-phenotypes.74a538c4.png"
   },
   {
-    "revision": "8410bb4ab6473d83e33993e495bab3b3",
+    "revision": "bf237ef70f9a3e524084ff851153f9a3",
     "url": "/monarch-ui-draft/index.html"
   },
   {
-    "revision": "60acf3466c9e4a52a0d2",
-    "url": "/monarch-ui-draft/css/analytics.c42f898a.css"
+    "revision": "d691805f1fe2c70d7e24",
+    "url": "/monarch-ui-draft/css/analytics.146aceae.css"
   }
 ];
