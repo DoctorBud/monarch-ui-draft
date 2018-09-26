@@ -13,7 +13,7 @@
         >
           <tab-content title="Create A Profile of Phenotypes">
             <monarch-autocomplete
-              home-search="true"
+              :home-search="true"
               single-category="phenotype"
               @interface="handlePhenotypes"
             />
@@ -58,7 +58,7 @@
               </div>
               <div class="col-9">
                 <monarch-autocomplete
-                  home-search="true"
+                  :home-search="true"
                   single-category="gene"
                   @interface="handleGenes"
                 />
@@ -299,13 +299,29 @@
     </div>
   </div>
 </template>
+
 <script>
-import * as MA from '@/monarchAccess';
+import Vue from 'vue';
+import VueFormWizard from 'vue-form-wizard';
+import 'vue-form-wizard/dist/vue-form-wizard.min.css';
+import * as BL from '@/api/BioLink';
+import MonarchAutocomplete from '@/components/MonarchAutocomplete.vue';
+import PhenoGrid from '@/components/PhenoGrid.vue';
+import LocalNav from '@/components/LocalNav.vue';
+import PhenotypesTable from '@/components/PhenotypesTable.vue';
+
+Vue.use(VueFormWizard);
 
 const findIndex = require('lodash/findIndex');
 
 export default {
   name: 'AnalyzePhenotypes',
+  components: {
+    'monarch-autocomplete': MonarchAutocomplete,
+    'pheno-grid': PhenoGrid,
+    'phenotypes-table': PhenotypesTable,
+    'local-nav': LocalNav,
+  },
   data() {
     return {
       mode: 'search',
@@ -391,7 +407,7 @@ export default {
     async fetchLabel(curie, curieType) {
       const that = this;
       try {
-        const searchResponse = await MA.getNodeLabelByCurie(curie);
+        const searchResponse = await BL.getNodeLabelByCurie(curie);
         if (curieType === 'phenotype') {
           this.convertPhenotypes(searchResponse);
           if (searchResponse.status === 500) {

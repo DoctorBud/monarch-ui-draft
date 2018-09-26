@@ -6,20 +6,33 @@
   />
 
 </template>
+
 <script>
+const Phenogrid = {
+  name: 'MockPhenogrid',
+  createPhenogridForElement:
+    function createPhenogridForElement(div, options) {
+      console.log('Mock createPhenogridForElement', div, options);
+    },
+};
+
 export default {
   props: {
     xAxis: {
-      type: Array
+      type: Array,
+      default: null
     },
     yAxis: {
-      type: Array
+      type: Array,
+      default: null
     },
     index: {
-      type: Number
+      type: Number,
+      default: 0
     },
     mode: {
-      type: String
+      type: String,
+      default: null
     }
 
   },

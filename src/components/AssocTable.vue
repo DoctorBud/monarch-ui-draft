@@ -167,7 +167,7 @@
 </template>
 
 <script>
-import * as MA from '@/monarchAccess';
+import * as BL from '@/api/BioLink';
 import JsonTree from 'vue-json-tree';
 
 export default {
@@ -343,7 +343,7 @@ export default {
           start: ((this.currentPage - 1) * this.rowsPerPage),
           rows: this.rowsPerPage
         };
-        const searchResponse = await MA.getNodeAssociations(
+        const searchResponse = await BL.getNodeAssociations(
           this.nodeType,
           this.identifier,
           this.cardType,
@@ -352,7 +352,7 @@ export default {
         if (!searchResponse.data
             || !searchResponse.data.associations) {
           that.dataPacket = null;
-          throw new Error('MA.getNodeAssociations() returned no data');
+          throw new Error('BL.getNodeAssociations() returned no data');
         }
         that.dataPacket = searchResponse;
         that.dataFetched = true;

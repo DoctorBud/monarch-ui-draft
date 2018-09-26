@@ -201,7 +201,7 @@
 <script>
 
 import us from 'underscore';
-import * as MA from '@/monarchAccess';
+import * as BL from '@/api/BioLink';
 
 import NodeSidebar from '@/components/NodeSidebar.vue';
 import NodeCard from '@/components/NodeCard.vue';
@@ -448,7 +448,7 @@ export default {
       this.node = response;
       // this.nodeDebug = JSON.stringify(response, null, 2);
 
-      const neighborhood = MA.getNeighborhoodFromResponse(response);
+      const neighborhood = BL.getNeighborhoodFromResponse(response);
       const nodeLabelMap = neighborhood.nodeLabelMap;
       const equivalentClasses = neighborhood.equivalentClasses;
       const superclasses = neighborhood.superclasses;
@@ -542,7 +542,7 @@ export default {
       this.startProgress();
 
       try {
-        const nodeResponse = await MA.getNodeSummary(this.nodeId, this.nodeType);
+        const nodeResponse = await BL.getNodeSummary(this.nodeId, this.nodeType);
 
         that.applyResponse(nodeResponse);
         that.clearProgress();

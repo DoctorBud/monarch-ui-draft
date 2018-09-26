@@ -173,7 +173,7 @@
 </template>
 
 <script>
-import * as MA from '@/monarchAccess';
+import * as BL from '@/api/BioLink';
 
 const debounce = require('lodash/debounce');
 
@@ -266,7 +266,7 @@ export default {
     async fetchData() {
       try {
         const selected = this.selected;
-        const searchResponse = await MA.getSearchTermSuggestions(this.value, selected);
+        const searchResponse = await BL.getSearchTermSuggestions(this.value, selected);
         searchResponse.docs.forEach(elem => {
           const resultPacket = {
             match: elem.match,

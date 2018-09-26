@@ -41,11 +41,14 @@ export default new Router({
       name: 'home',
       component: Home,
     },
-    // {
-    //   path: '/analytics',
-    //   name: 'analytics',
-    //   component: Analytics,
-    // },
+    {
+      path: '/analyze/phenotypes',
+      name: 'analyzephenotypes',
+      // route level code-splitting
+      // this generates a separate chunk (analytics.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "analyzephenotypes" */ './views/AnalyzePhenotypes.vue'),
+    },
     {
       path: '/analytics',
       name: 'analytics',

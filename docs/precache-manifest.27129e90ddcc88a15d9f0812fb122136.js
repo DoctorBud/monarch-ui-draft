@@ -1,19 +1,27 @@
 self.__precacheManifest = [
   {
-    "revision": "9996e65df9805481b17caeccdec8a336",
-    "url": "/monarch-ui-draft/img/team-renci.9996e65d.png"
+    "revision": "6e271a4e6231f33db37113c1fbb83fcd",
+    "url": "/monarch-ui-draft/img/tax-heat-plotly.6e271a4e.png"
   },
   {
     "revision": "b6216d61c03e6ce0c9aea6ca7808f7ca",
     "url": "/monarch-ui-draft/robots.txt"
   },
   {
-    "revision": "05d897a1fc7c61ecd8b1af6f0c9743d7",
-    "url": "/monarch-ui-draft/img/team-garvan.05d897a1.png"
+    "revision": "9996e65df9805481b17caeccdec8a336",
+    "url": "/monarch-ui-draft/img/team-renci.9996e65d.png"
   },
   {
-    "revision": "a5d26384485a9324b6e3",
-    "url": "/monarch-ui-draft/css/app.445e7f7c.css"
+    "revision": "aa446f230dd62f72ebd7",
+    "url": "/monarch-ui-draft/css/analyzephenotypes.fbc5f576.css"
+  },
+  {
+    "revision": "98d461eb7352308a752f",
+    "url": "/monarch-ui-draft/css/app.b87ab3b9.css"
+  },
+  {
+    "revision": "98d461eb7352308a752f",
+    "url": "/monarch-ui-draft/js/app.43a134d3.js"
   },
   {
     "revision": "b173e9e26d840ea0a7f9",
@@ -36,16 +44,16 @@ self.__precacheManifest = [
     "url": "/monarch-ui-draft/img/team-jackson.7b1eed8a.png"
   },
   {
+    "revision": "674f50d287a8c48dc19ba404d20fe713",
+    "url": "/monarch-ui-draft/fonts/fontawesome-webfont.674f50d2.eot"
+  },
+  {
     "revision": "af7ae505a9eed503f8b8e6982036873e",
     "url": "/monarch-ui-draft/fonts/fontawesome-webfont.af7ae505.woff2"
   },
   {
     "revision": "fee66e712a8a08eef5805a46892932ad",
     "url": "/monarch-ui-draft/fonts/fontawesome-webfont.fee66e71.woff"
-  },
-  {
-    "revision": "674f50d287a8c48dc19ba404d20fe713",
-    "url": "/monarch-ui-draft/fonts/fontawesome-webfont.674f50d2.eot"
   },
   {
     "revision": "b06871f281fee6b241d60582ae9369b9",
@@ -56,16 +64,16 @@ self.__precacheManifest = [
     "url": "/monarch-ui-draft/img/fontawesome-webfont.912ec66d.svg"
   },
   {
-    "revision": "6e271a4e6231f33db37113c1fbb83fcd",
-    "url": "/monarch-ui-draft/img/tax-heat-plotly.6e271a4e.png"
+    "revision": "646a264014b99ed4a130",
+    "url": "/monarch-ui-draft/js/analytics.5c69fe28.js"
   },
   {
-    "revision": "d691805f1fe2c70d7e24",
-    "url": "/monarch-ui-draft/js/analytics.55a2ca42.js"
+    "revision": "aa446f230dd62f72ebd7",
+    "url": "/monarch-ui-draft/js/analyzephenotypes.548b84a1.js"
   },
   {
-    "revision": "a5d26384485a9324b6e3",
-    "url": "/monarch-ui-draft/js/app.9b54403f.js"
+    "revision": "05d897a1fc7c61ecd8b1af6f0c9743d7",
+    "url": "/monarch-ui-draft/img/team-garvan.05d897a1.png"
   },
   {
     "revision": "2aa95d60aae7739f68ce58fa5bdc753e",
@@ -116,11 +124,11 @@ self.__precacheManifest = [
     "url": "/monarch-ui-draft/img/icon-phenotypes.74a538c4.png"
   },
   {
-    "revision": "bf237ef70f9a3e524084ff851153f9a3",
+    "revision": "e6e1c097f902acd08e353f28ff15b02c",
     "url": "/monarch-ui-draft/index.html"
   },
   {
-    "revision": "d691805f1fe2c70d7e24",
-    "url": "/monarch-ui-draft/css/analytics.146aceae.css"
+    "revision": "646a264014b99ed4a130",
+    "url": "/monarch-ui-draft/css/analytics.805ba0cd.css"
   }
 ];

@@ -26,7 +26,7 @@ function getBiolinkAnnotation(cardType) {
 // not necessarily be the same set of functions needed by a generic client
 // of Monarch's services/data. In other words, we can add convenience/aggregation
 // services here that may not make sense for general-purpose use. Our goal
-// with MonarchAccess is to isolate the UI from the service layer, and only secondarily,
+// with this BioLink API module is to isolate the UI from the service layer, and only secondarily,
 // to create a general-purpose service layer, which is more what BioLink promises
 // to be.
 //

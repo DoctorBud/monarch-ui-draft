@@ -53,7 +53,7 @@
 </template>
 <script>
 import _ from 'underscore';
-import * as MA from '@/monarchAccess';
+import * as BL from '@/api/BioLink';
 
 const uniqBy = require('lodash/uniqBy');
 
@@ -81,7 +81,7 @@ export default {
     async getCurieRelationships() {
       const that = this;
       try {
-        const searchResponse = await MA.getNodeSummary(this.anchorId, 'phenotype');
+        const searchResponse = await BL.getNodeSummary(this.anchorId, 'phenotype');
         this.familyData = searchResponse;
         this.sortRelationships();
         this.dataFetched = true;
@@ -106,7 +106,7 @@ export default {
         synonyms: this.familyData.synonyms
       };
 
-      const neighborhood = MA.getNeighborhoodFromResponse(this.familyData);
+      const neighborhood = BL.getNeighborhoodFromResponse(this.familyData);
       const nodeLabelMap = neighborhood.nodeLabelMap;
       const equivalentClasses = neighborhood.equivalentClasses;
       const superclasses = neighborhood.superclasses;

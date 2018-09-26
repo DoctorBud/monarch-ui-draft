@@ -67,7 +67,7 @@
   </div>
 </template>
 <script>
-import * as MA from '@/monarchAccess';
+import * as BL from '@/api/BioLink';
 
 export default {
   props: {
@@ -132,7 +132,7 @@ export default {
     async comparePhenotypes() {
       const that = this;
       try {
-        const searchResponse = await MA.comparePhenotypes(this.phenotypes, this.genes);
+        const searchResponse = await BL.comparePhenotypes(this.phenotypes, this.genes);
 
         this.preItems = searchResponse;
         this.dataFetched = true;

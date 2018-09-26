@@ -109,7 +109,7 @@
 </template>
 
 <script>
-import * as MA from '@/monarchAccess';
+import * as BL from '@/api/BioLink';
 
 import AssocFacets from '@/components/AssocFacets.vue';
 
@@ -135,7 +135,7 @@ export default {
 
   data() {
     return {
-      debugServerName: MA.debugServerName()
+      debugServerName: BL.debugServerName()
     };
   },
   created() {
