@@ -1,11 +1,11 @@
 import { expect } from 'chai';
 import { shallowMount } from '@vue/test-utils';
-import Navbar from '@/components/Navbar.vue';
+import FooterAll from '@/components/FooterAll.vue';
 
-describe('Navbar.vue', () => {
-  it('renders', () => {
-    const wrapper = shallowMount(Navbar);
+describe('FooterAll.vue', () => {
+  it('renders About Monarch', () => {
+    const wrapper = shallowMount(FooterAll);
     console.log('wt', wrapper.text());
-    expect(wrapper.text()).to.include('About');
+    expect(wrapper.text()).to.include('About Monarch');
   });
 });
