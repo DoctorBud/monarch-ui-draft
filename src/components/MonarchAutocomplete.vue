@@ -267,7 +267,7 @@ export default {
       try {
         const selected = this.selected;
         const searchResponse = await BL.getSearchTermSuggestions(this.value, selected);
-        searchResponse.docs.forEach(elem => {
+        searchResponse.docs.forEach((elem) => {
           const resultPacket = {
             match: elem.match,
             category: this.categoryMap(elem.category),

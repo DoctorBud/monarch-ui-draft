@@ -235,7 +235,7 @@ export default {
     trueFacets() {
       const truth = [];
       Object.entries(this.facets.species)
-        .forEach(elem => {
+        .forEach((elem) => {
           if (elem[1]) {
             truth.push(this.keyMap(elem[0]));
           }
@@ -274,9 +274,9 @@ export default {
     rowsProvider(ctx, callback) {
       // console.log('rowsProvider', ctx);
       // debugger;
-      this.fetchData().then(data => {
+      this.fetchData().then((data) => {
         callback(this.rows);
-      }).catch(error => {
+      }).catch((error) => {
         callback([]);
       });
     },
@@ -371,7 +371,7 @@ export default {
     populateRows() {
       this.rows = [];
       let count = 0;
-      this.dataPacket.data.associations.forEach(elem => {
+      this.dataPacket.data.associations.forEach((elem) => {
         count += 1;
         let pubs = [
           'No References'

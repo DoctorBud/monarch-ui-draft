@@ -144,7 +144,7 @@ export default {
     },
     processItems() {
       this.items = [];
-      this.preItems.data.results.forEach(elem => {
+      this.preItems.data.results.forEach((elem) => {
         const rowData = {
           hitLabel: elem.j.label,
           hitId: elem.j.id,
@@ -158,7 +158,7 @@ export default {
           otherMatchIc: '',
           otherMatchLink: ''
         };
-        elem.matches.forEach(match => {
+        elem.matches.forEach((match) => {
           if (match.lcs.id !== rowData.hitId) {
             rowData.otherMatchIc = this.round(match.lcs.IC, 2);
             rowData.otherMatchId = match.lcs.id;

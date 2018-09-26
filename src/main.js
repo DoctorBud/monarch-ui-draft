@@ -4,7 +4,7 @@ import BootstrapVue from 'bootstrap-vue/dist/bootstrap-vue.esm';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 import router from './router';
-import './registerServiceWorker';
+// import './registerServiceWorker';
 
 import App from './App.vue';
 

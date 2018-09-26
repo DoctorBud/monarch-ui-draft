@@ -113,7 +113,7 @@ export default {
           fields: 'exac'
         }
       })
-        .then(resp => {
+        .then((resp) => {
           const hits = resp.data.hits[0];
           if (hits.exac) {
             this.showGeneExac = true;
@@ -131,7 +131,7 @@ export default {
             };
           }
         })
-        .catch(err => {
+        .catch((err) => {
           // eslint-disable-next-line
             console.log(err);
         });

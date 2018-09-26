@@ -1,8 +1,47 @@
 import _ from 'underscore';
 import axios from 'axios';
-import * as Servers from './servers';
 
-const serverConfiguration = Servers.serverConfigurations.development;
+const servers = {
+  development: {
+    'type': 'development',
+    'app_base': 'https://beta.monarchinitiative.org',
+    'scigraph_url': 'https://scigraph-ontology-dev.monarchinitiative.org/scigraph/',
+    'scigraph_data_url': 'https://scigraph-data-dev.monarchinitiative.org/scigraph/',
+    'golr_url': 'https://solr.monarchinitiative.org/solr/golr/',
+    'search_url': 'https://solr.monarchinitiative.org/solr/search/',
+    'owlsim_services_url': 'https://beta.monarchinitiative.org/owlsim',
+    'analytics_id': '',
+    // 'biolink_url': 'https://api-dev.monarchinitiative.org/api/',
+    'biolink_url': 'https://api.monarchinitiative.org/api/',
+  },
+
+  beta: {
+    'type': 'beta',
+    'app_base': 'https://beta.monarchinitiative.org',
+    'scigraph_url': 'https://scigraph-ontology-dev.monarchinitiative.org/scigraph/',
+    'scigraph_data_url': 'https://scigraph-data-dev.monarchinitiative.org/scigraph/',
+    'golr_url': 'https://solr.monarchinitiative.org/solr/golr/',
+    'search_url': 'https://solr.monarchinitiative.org/solr/search/',
+    'owlsim_services_url': 'https://beta.monarchinitiative.org/owlsim',
+    'analytics_id': '',
+    'biolink_url': 'https://api-dev.monarchinitiative.org/api/'
+  },
+
+  cgrb: {
+    'type': 'beta',
+    'app_base': 'https://monarch-app-beta.cgrb.oregonstate.edu',
+    'scigraph_url': 'https://monarch-scigraph-ontology-dev.cgrb.oregonstate.edu/scigraph/',
+    'scigraph_data_url': 'https://monarch-scigraph-data-dev.cgrb.oregonstate.edu/scigraph/',
+    'golr_url': 'https://monarch-solr6-dev.cgrb.oregonstate.edu/solr/golr/',
+    'search_url': 'https://monarch-solr6-dev.cgrb.oregonstate.edu/solr/search/',
+    'owlsim_services_url': 'https://monarch-app-beta.cgrb.oregonstate.edu/owlsim',
+    'analytics_id': '',
+    'biolink_url': 'https://api-dev.monarchinitiative.org/api/'
+  }
+};
+
+
+const serverConfiguration = servers.development;
 const biolink = serverConfiguration.biolink_url;
 
 function getBiolinkAnnotation(cardType) {
@@ -171,7 +210,7 @@ async function getCountsForNode(nodeId, nodeType) {
   const associationTypes = nodeAssociationTypes[nodeType];
 
   if (associationTypes) {
-    const promisesArray = associationTypes.map(a => {
+    const promisesArray = associationTypes.map((a) => {
       const countPromise = getCounts(nodeId, nodeType, a);
       return countPromise;
     });
@@ -245,12 +284,12 @@ export function getNeighborhoodFromResponse(response) {
   const subclasses = [];
 
   if (response.nodes) {
-    response.nodes.forEach(node => {
+    response.nodes.forEach((node) => {
       nodeLabelMap[node.id] = node.lbl;
     });
   }
   if (response.edges) {
-    response.edges.forEach(edge => {
+    response.edges.forEach((edge) => {
       if (edge.pred === 'subClassOf') {
         if (edge.sub === nodeId) {
           // console.log('Superclass Edge', edge.sub, edge.pred, edge.obj);
@@ -297,7 +336,7 @@ export function getSearchTermSuggestions(term, selected) {
     params.append('boost_fx', 'pow(edges,0.334)');
   }
   if (selected.length > 0) {
-    selected.forEach(elem => {
+    selected.forEach((elem) => {
       params.append('category', elem);
     });
   }
@@ -308,7 +347,7 @@ export function getSearchTermSuggestions(term, selected) {
   params.append('prefix', '-OMIA');
   const returnedPromise = new Promise((resolve, reject) => {
     axios.get(urlExtension, { params })
-      .then(resp => {
+      .then((resp) => {
         const responseData = resp.data;
         if (typeof responseData !== 'object') {
           reject(responseData);
@@ -317,7 +356,7 @@ export function getSearchTermSuggestions(term, selected) {
           resolve(responseData);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
       });
   });
@@ -334,7 +373,7 @@ export function getNodeAssociations(nodeType, identifier, cardType, params) {
 
   const returnedPromise = new Promise((resolve, reject) => {
     axios.get(url, { params })
-      .then(resp => {
+      .then((resp) => {
         const responseData = resp;
         if (typeof responseData !== 'object') {
           reject(responseData);
@@ -343,7 +382,7 @@ export function getNodeAssociations(nodeType, identifier, cardType, params) {
           resolve(responseData);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
       });
   });
@@ -358,7 +397,7 @@ export function getNodeLabelByCurie(curie) {
   };
   const returnedPromise = new Promise((resolve, reject) => {
     axios.get(baseUrl, { params })
-      .then(resp => {
+      .then((resp) => {
         const responseData = resp;
         if (typeof responseData !== 'object') {
           reject(responseData);
@@ -367,7 +406,7 @@ export function getNodeLabelByCurie(curie) {
           resolve(responseData);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
       });
   });
@@ -384,7 +423,7 @@ export function comparePhenotypes(phenotypesList, geneList, species = 'all', mod
   params.append('mode', mode);
   const returnedPromise = new Promise((resolve, reject) => {
     axios.get(baseUrl, { params })
-      .then(resp => {
+      .then((resp) => {
         const responseData = resp;
         if (typeof responseData !== 'object') {
           reject(responseData);
@@ -393,7 +432,7 @@ export function comparePhenotypes(phenotypesList, geneList, species = 'all', mod
           resolve(responseData);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
       });
   });

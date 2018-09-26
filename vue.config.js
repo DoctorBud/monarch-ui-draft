@@ -3,12 +3,12 @@ module.exports = {
   baseUrl: '/monarch-ui-draft/',
   lintOnSave: false,
 
-  chainWebpack: config => {
+  chainWebpack: (config) => {
     config.module
       .rule('vue')
       .use('vue-loader')
       .loader('vue-loader')
-      .tap(options => {
+      .tap((options) => {
         /* eslint no-param-reassign: 0 */
         options.transformAssetUrls = {
           'img': 'src',

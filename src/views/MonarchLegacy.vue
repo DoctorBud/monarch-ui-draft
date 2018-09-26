@@ -31,6 +31,69 @@
 
 <script>
 
+function loadPathContentAsync(path, done) {
+  /* global XMLHttpRequest */
+  const oReq = new XMLHttpRequest();
+
+  let refinedPath = path;
+  if (refinedPath.indexOf('/') === 0) {
+    refinedPath = '/legacy' + refinedPath;
+    refinedPath = `https://localhost:8080${refinedPath}`;
+  }
+
+  // const hashIndex = refinedPath.indexOf('#');
+  // if (hashIndex >= 0) {
+  //   refinedPath = refinedPath.slice(0, hashIndex) + '?stripme' + refinedPath.slice(hashIndex);
+  // }
+  // else {
+  //   refinedPath += '?stripme';
+  // }
+
+  oReq.addEventListener('loadend', function load() {
+    done(this.status, this.responseText, this.responseURL, refinedPath);
+  });
+
+  try {
+    oReq.open('GET', refinedPath);
+    oReq.send();
+  }
+  catch (e) {
+    console.log('loadPathContentAsync exception', path, refinedPath, this, e);
+  }
+}
+
+function updatePageLinks() {
+  function findLinks() {
+    return [].slice.call(document.querySelectorAll('[data-monarch-legacy]'));
+  }
+
+  function getLinkPath(link) {
+    return link.pathname || link.getAttribute('href');
+  }
+
+  const self = this;
+
+  findLinks().forEach((link) => {
+    if (!link.hasListenerAttached) {
+      // console.log('link:', link, getLinkPath(link));
+      link.addEventListener('click', function click(e) {
+        let location = getLinkPath(link);
+
+        location = location
+          .replace(/\/+$/, '')
+          .replace(/^\/+/, '/');
+
+        // console.log('click', location, self._destroyed);
+        if (!self._destroyed) {
+          e.preventDefault();
+          self.push(location);
+        }
+      });
+      link.hasListenerAttached = true;
+    }
+  });
+}
+
 // Copied from https://github.com/jashkenas/underscore/blob/e944e0275abb3e1f366417ba8facb5754a7ad273/underscore.js#L1458
 
 const unescapeMap = {
@@ -44,20 +107,55 @@ const unescapeMap = {
 };
 
 // Functions for escaping and unescaping strings to/from HTML interpolation.
-const createEscaper = function (map) {
-  const escaper = function (match) {
+function createEscaper(map) {
+  function escaper(match) {
     return map[match];
-  };
+  }
   // Regexes for identifying a key that needs to be escaped.
   const source = '(?:' + Object.keys(map).join('|') + ')';
   const testRegexp = RegExp(source);
   const replaceRegexp = RegExp(source, 'g');
-  return function (string) {
+  return function f(string) {
     string = string == null ? '' : '' + string;
     return testRegexp.test(string) ? string.replace(replaceRegexp, escaper) : string;
   };
-};
+}
 const unescape = createEscaper(unescapeMap);
+
+/* eslint camelcase: 0 */
+
+function setupLegacyMocks() {
+  window.navbar_search_init = function navbar_search_init() {
+    console.log('Mock navbar_search_init');
+  };
+  window.InitMonarchPage = function InitMonarchPage() {
+    console.log('Mock InitMonarchPage');
+  };
+  window.InitTabs = function InitTabs() {
+    console.log('Mock InitTabs');
+  };
+  window.InitTables = function InitTables() {
+    console.log('Mock InitTables');
+  };
+  window.InitFacetFilters = function InitFacetFilters() {
+    console.log('Mock InitFacetFilters');
+  };
+  window.makeGeneLandingGraph = function makeGeneLandingGraph() {
+    console.log('Mock makeGeneLandingGraph');
+  };
+  window.makeGeneDiseaseLandingGraph = function makeGeneDiseaseLandingGraph() {
+    console.log('Mock makeGeneDiseaseLandingGraph');
+  };
+  window.makeDiseaseLandingGraph = function makeDiseaseLandingGraph() {
+    console.log('Mock makeDiseaseLandingGraph');
+  };
+  window.makePhenotypeLandingGraph = function makePhenotypeLandingGraph() {
+    console.log('Mock makePhenotypeLandingGraph');
+  };
+  window.makeModelLandingGraph = function makeModelLandingGraph() {
+    console.log('Mock makeModelLandingGraph');
+  };
+}
 
 export default {
   name: 'Monarchlegacy',
@@ -85,7 +183,7 @@ export default {
     }
   },
   watch: {
-    '$route': function (to, from) {
+    '$route': function $route(to, from) {
       // Only fetchData if the path is different.
       // hash changes are currently handled by monarch-tabs.js
       // within the loaded MonarchLegacy component.
@@ -99,9 +197,10 @@ export default {
   },
   mounted() {
     this.fetchData();
-    this.$on('legacyContentChanged', function (msg) {
+    this.$on('legacyContentChanged', function legacyContentChanged(msg) {
       console.log('legacyContentChanged:', msg);
     });
+    setupLegacyMocks();
   },
   destroy() {
   },
@@ -124,7 +223,7 @@ export default {
       }
       const scriptHeaderPrefix = '+++++++++++++++monarch-script';
       const scriptHeaderSuffix = '---------------monarch-script';
-      window.loadPathContentAsync(this.path, function (status, content, responseURL, originalURL) {
+      loadPathContentAsync(this.path, function loaded(status, content, responseURL, originalURL) {
         if (status !== 200) { // (status === 504) || (status === 404)) {
           that.contentBody = `
             <br>
@@ -150,7 +249,7 @@ export default {
             </h4>
             `;
 
-          that.$nextTick(function () {
+          that.$nextTick(function tick() {
             if (that.progressTimer) {
               clearTimeout(that.progressTimer);
               that.progressTimer = null;
@@ -176,7 +275,7 @@ export default {
             );
             // that.contentBody = unescape(that.contentBody);
 
-            that.$nextTick(function () {
+            that.$nextTick(function tick() {
               if (that.progressTimer) {
                 clearTimeout(that.progressTimer);
                 that.progressTimer = null;
@@ -196,15 +295,16 @@ export default {
                   responseURL += path.slice(hashIndex);
                 }
 
-                window.vueRouter.replace(originalURL, function () {
-                  that.path = that.$route.path;
-                });
+                // that.$router.replace(originalURL, function () {
+                //   that.path = that.$route.path;
+                // });
               }
 
               // console.log('that.contentScript', that.contentScript.slice(0, 50));
               if (that.contentScript) {
+                /* eslint no-eval: 0 */
                 eval(that.contentScript);
-                window.vueRouter.updatePageLinks();
+                updatePageLinks();
               }
             });
           }

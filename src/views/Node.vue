@@ -485,7 +485,7 @@ export default {
       this.hasExacGene = (this.nodeType === 'gene' || this.nodeType === 'variant');
 
       const nonEmptyCards = [];
-      this.availableCards.forEach(cardType => {
+      this.availableCards.forEach((cardType) => {
         const count = that.node.counts[cardType];
         that.counts[cardType] = count ? count.totalCount : 0;
         if (that.counts[cardType] > 0) {
@@ -497,7 +497,7 @@ export default {
       const hash = this.$router.currentRoute.hash;
       if (hash.length > 1) {
         const cardType = hash.slice(1);
-        this.$nextTick(_ => {
+        this.$nextTick((_) => {
           this.expandCard(cardType);
         });
       }

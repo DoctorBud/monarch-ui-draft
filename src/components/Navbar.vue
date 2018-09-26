@@ -55,8 +55,8 @@
             Annotate Text
           </b-dropdown-item>
           <b-dropdown-item
-            to="/page/phenogrid">
-            Phenogrid Widget
+            to="/page/exomes">
+            Exomes
           </b-dropdown-item>
         </b-nav-item-dropdown>
 

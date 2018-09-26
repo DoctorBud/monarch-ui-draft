@@ -131,7 +131,7 @@ export default {
       let homTotal = 0;
       let aFTotal = 0;
 
-      prefixes.forEach(prefix => {
+      prefixes.forEach((prefix) => {
         const aC = alleleCounts[`ac_${prefix}`];
         const aN = alleleNumbers[`an_${prefix}`];
         const hom = homozygotes[`hom_${prefix}`];
@@ -178,7 +178,7 @@ export default {
           fields: 'exac'
         }
       })
-        .then(resp => {
+        .then((resp) => {
           if (resp.data.total === 1) {
             const exacData = resp.data.hits[0].exac;
             if (exacData) {
@@ -207,7 +207,7 @@ export default {
             }
           }
         })
-        .catch(err => {
+        .catch((err) => {
           // eslint-disable-next-line
             console.log(err);
         });

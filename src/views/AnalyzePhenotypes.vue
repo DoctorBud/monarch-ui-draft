@@ -452,7 +452,7 @@ export default {
         this.xAxis = this.selectedGroups;
       }
       else {
-        this.xAxis = this.genes.map(elem => {
+        this.xAxis = this.genes.map((elem) => {
           this.mode = 'compare';
           return elem.curie;
         });
@@ -465,7 +465,7 @@ export default {
     },
     geneListLookup() {
       this.genes = [];
-      this.geneCurieList.split(',').forEach(elem => {
+      this.geneCurieList.split(',').forEach((elem) => {
         this.fetchLabel(`${this.geneCurieType}:${elem.trim()}`, 'gene');
       });
     },
@@ -477,7 +477,7 @@ export default {
         'ZP'
       ];
       this.phenotypes = [];
-      this.phenoCurieList.split(',').forEach(elem => {
+      this.phenoCurieList.split(',').forEach((elem) => {
         const elemTrimmed = elem.trim();
         const prefix = elemTrimmed.split(':')[0];
         if (acceptedPrefixes.includes(prefix)) {

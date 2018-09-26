@@ -28,10 +28,10 @@ module.exports = {
     'indent': [2, 2, { 'SwitchCase': 1 }],
     'spaced-comment': 1,
     'quotes': ['error', 'single', { 'allowTemplateLiterals': true }],
-    'import/prefer-default-export': 'off',
-    'arrow-parens': ['error', 'as-needed'],
-    'vue/html-self-closing': 0,
-    'vue/html-indent': 1,
+    // 'import/prefer-default-export': 'off',
+    // 'arrow-parens': ['error', 'as-needed'],
+    // 'vue/html-self-closing': 0,
+    // 'vue/html-indent': 1,
     'global-require': 0,
     'no-unused-vars': [0, { 'argsIgnorePattern': '^_' }],
     'quote-props': [0],
@@ -41,7 +41,8 @@ module.exports = {
     'comma-dangle': 0,
     'max-len': 0,
     'standard/no-callback-literal': 0,
-    'no-param-reassign': 0
+    'no-param-reassign': 0,
+    'no-underscore-dangle': 0,
   },
   parserOptions: {
     parser: 'babel-eslint'
